@@ -24,8 +24,8 @@ const LandingPage = () => {
       {/* Background waves/grid pattern mock with CSS */}
       <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
-      {/* Floating SVG waves in the background */}
-      <div className="absolute inset-x-0 bottom-0 h-[45%] z-0 pointer-events-none overflow-hidden opacity-[0.07] select-none">
+      {/* Floating SVG waves in the background (Increased Opacity for Vibrant Color) */}
+      <div className="absolute inset-x-0 bottom-0 h-[48%] z-0 pointer-events-none overflow-hidden opacity-[0.22] select-none">
         <svg className="absolute w-full h-full bottom-0 left-0" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path 
             fill="url(#wave-gradient-1)" 
@@ -39,14 +39,14 @@ const LandingPage = () => {
           ></path>
           <defs>
             <linearGradient id="wave-gradient-1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#a855f7" />
-              <stop offset="50%" stopColor="#ec4899" />
-              <stop offset="100%" stopColor="#14b8a6" />
+              <stop offset="0%" stopColor="#c084fc" stopOpacity="0.8" />
+              <stop offset="50%" stopColor="#f472b6" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#2dd4bf" stopOpacity="0.8" />
             </linearGradient>
             <linearGradient id="wave-gradient-2" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#14b8a6" />
-              <stop offset="50%" stopColor="#3b82f6" />
-              <stop offset="100%" stopColor="#a855f7" />
+              <stop offset="0%" stopColor="#2dd4bf" stopOpacity="0.7" />
+              <stop offset="50%" stopColor="#60a5fa" stopOpacity="0.7" />
+              <stop offset="100%" stopColor="#c084fc" stopOpacity="0.7" />
             </linearGradient>
           </defs>
         </svg>
@@ -67,7 +67,7 @@ const LandingPage = () => {
       <main className="max-w-6xl mx-auto px-6 py-12 flex flex-col items-center justify-center flex-1 text-center z-10">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
           Empowering Care, <br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 animate-pulse">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">
             Nurturing Elder Lives
           </span>
         </h1>
@@ -89,10 +89,14 @@ const LandingPage = () => {
             
             {/* Icon & Orbit Container */}
             <div className="relative w-24 h-24 flex items-center justify-center mb-6">
-              {/* Orbit Ring */}
-              <div className="absolute w-[120%] h-[30%] border border-purple-500/30 rounded-full transform rotate-[-25deg] shadow-[0_0_8px_rgba(168,85,247,0.1)] group-hover:border-purple-500/60 transition-all duration-500" />
-              {/* Core Icon */}
-              <div className="w-14 h-14 rounded-full bg-purple-950/60 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:text-purple-355 group-hover:scale-110 transition-all duration-500 relative z-10 shadow-[0_0_15px_rgba(168,85,247,0.2)] logo-blink-hover">
+              {/* Tilted Orbit Ring Container */}
+              <div className="absolute w-[120%] h-[30%] transform rotate-[-25deg] pointer-events-none">
+                {/* Spinning Ring */}
+                <div className="w-full h-full border-2 border-purple-500/30 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.3)] group-hover:border-purple-500/60 transition-all duration-500 animate-orbit-spin" />
+              </div>
+              
+              {/* Premium Core Icon with Glow */}
+              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-purple-950 to-purple-800 border-2 border-purple-500/40 flex items-center justify-center text-purple-300 group-hover:text-white group-hover:scale-110 transition-all duration-500 relative z-10 premium-glow-purple logo-blink-hover cursor-help">
                 <ShieldCheck size={24} />
               </div>
             </div>
@@ -117,10 +121,14 @@ const LandingPage = () => {
             
             {/* Icon & Orbit Container */}
             <div className="relative w-24 h-24 flex items-center justify-center mb-6">
-              {/* Orbit Ring */}
-              <div className="absolute w-[120%] h-[30%] border border-teal-500/30 rounded-full transform rotate-[-25deg] shadow-[0_0_8px_rgba(20,184,166,0.1)] group-hover:border-teal-500/60 transition-all duration-500" />
-              {/* Core Icon */}
-              <div className="w-14 h-14 rounded-full bg-teal-950/60 border border-teal-500/30 flex items-center justify-center text-teal-400 group-hover:text-teal-355 group-hover:scale-110 transition-all duration-500 relative z-10 shadow-[0_0_15px_rgba(20,184,166,0.2)] logo-blink-hover">
+              {/* Tilted Orbit Ring Container */}
+              <div className="absolute w-[120%] h-[30%] transform rotate-[-25deg] pointer-events-none">
+                {/* Spinning Ring */}
+                <div className="w-full h-full border-2 border-teal-500/30 rounded-full shadow-[0_0_12px_rgba(20,184,166,0.3)] group-hover:border-teal-500/60 transition-all duration-500 animate-orbit-spin" />
+              </div>
+              
+              {/* Premium Core Icon with Glow */}
+              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-teal-950 to-teal-800 border-2 border-teal-500/40 flex items-center justify-center text-teal-300 group-hover:text-white group-hover:scale-110 transition-all duration-500 relative z-10 premium-glow-teal logo-blink-hover cursor-help">
                 <HelpingHand size={24} />
               </div>
             </div>
@@ -145,10 +153,14 @@ const LandingPage = () => {
             
             {/* Icon & Orbit Container */}
             <div className="relative w-24 h-24 flex items-center justify-center mb-6">
-              {/* Orbit Ring */}
-              <div className="absolute w-[120%] h-[30%] border border-pink-500/30 rounded-full transform rotate-[-25deg] shadow-[0_0_8px_rgba(236,72,153,0.1)] group-hover:border-pink-500/60 transition-all duration-500" />
-              {/* Core Icon */}
-              <div className="w-14 h-14 rounded-full bg-pink-950/60 border border-pink-500/30 flex items-center justify-center text-pink-400 group-hover:text-pink-355 group-hover:scale-110 transition-all duration-500 relative z-10 shadow-[0_0_15px_rgba(236,72,153,0.2)] logo-blink-hover">
+              {/* Tilted Orbit Ring Container */}
+              <div className="absolute w-[120%] h-[30%] transform rotate-[-25deg] pointer-events-none">
+                {/* Spinning Ring */}
+                <div className="w-full h-full border-2 border-pink-500/30 rounded-full shadow-[0_0_12px_rgba(236,72,153,0.3)] group-hover:border-pink-500/60 transition-all duration-500 animate-orbit-spin" />
+              </div>
+              
+              {/* Premium Core Icon with Glow */}
+              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-pink-950 to-pink-800 border-2 border-pink-500/40 flex items-center justify-center text-pink-300 group-hover:text-white group-hover:scale-110 transition-all duration-500 relative z-10 premium-glow-pink logo-blink-hover cursor-help">
                 <Heart size={24} />
               </div>
             </div>

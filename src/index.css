@@ -128,28 +128,55 @@
 /* Wave Floating Animations */
 @keyframes waveSlow {
   0%, 100% {
-    transform: translateX(0) translateY(0) scaleY(1);
+    transform: translateX(0) translateY(0) scale(1);
   }
-  55% {
-    transform: translateX(-3%) translateY(8px) scaleY(1.03);
+  50% {
+    transform: translateX(-2.5%) translateY(4px) scale(1.015);
   }
 }
 @keyframes waveMedium {
   0%, 100% {
-    transform: translateX(0) translateY(0) scaleY(1);
+    transform: translateX(0) translateY(0) scale(1);
   }
-  55% {
-    transform: translateX(3%) translateY(-10px) scaleY(0.97);
+  50% {
+    transform: translateX(2.5%) translateY(-5px) scale(0.985);
   }
 }
 
 .animate-wave-slow {
-  animation: waveSlow 15s ease-in-out infinite;
+  animation: waveSlow 22s ease-in-out infinite;
   transform-origin: bottom center;
 }
 .animate-wave-medium {
-  animation: waveMedium 10s ease-in-out infinite;
+  animation: waveMedium 16s ease-in-out infinite;
   transform-origin: bottom center;
 }
+
+/* Orbit Planetary Spin Animation */
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-orbit-spin {
+  animation: orbitSpin 18s linear infinite;
+  transform-origin: center center;
+}
+
+/* Neon Glow Premium Shadows */
+.premium-glow-purple {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.2);
+}
+.premium-glow-teal {
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.4), inset 0 0 10px rgba(20, 184, 166, 0.2);
+}
+.premium-glow-pink {
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.4), inset 0 0 10px rgba(236, 72, 153, 0.2);
+}
+
 
 
