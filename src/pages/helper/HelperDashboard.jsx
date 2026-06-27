@@ -119,19 +119,20 @@ const HelperDashboard = () => {
   };
 
   return (
-    <div className="relative min-h-[85vh] text-slate-800 pb-12 select-none">
+    <div className="relative min-h-[85vh] text-slate-100 pb-12 select-none">
       
-      {/* ================= STATIC CALMING SAGE BACKGROUND ================= */}
+      {/* ================= STATIC PREMIUM DARK FOREST BACKGROUND ================= */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-3xl">
-        {/* Solid contrasting calming Sage green background to make cards float */}
-        <div className="absolute inset-0 bg-[#DEE5DF] z-0" />
+        {/* Deep luxurious dark charcoal-forest background */}
+        <div className="absolute inset-0 bg-[#09110D] z-0" />
         
-        {/* Soft static white-glow accent behind cards */}
-        <div className="absolute top-[20%] left-[10%] w-[600px] h-[600px] rounded-full bg-white/20 blur-[120px]" />
-        
+        {/* Soft static glowing highlight spots for contrast */}
+        <div className="absolute top-[10%] left-[20%] w-[500px] h-[500px] rounded-full bg-emerald-950/20 blur-[130px]" />
+        <div className="absolute bottom-[10%] right-[15%] w-[450px] h-[450px] rounded-full bg-[#183a27]/10 blur-[120px]" />
+
         {/* Static Flower illustration in background for elegant look */}
         <div 
-          className="absolute right-[-6%] top-[8%] w-[420px] h-[420px] opacity-[0.06] pointer-events-none select-none mix-blend-multiply"
+          className="absolute right-[-6%] top-[8%] w-[420px] h-[420px] opacity-[0.05] pointer-events-none select-none mix-blend-screen"
           style={{
             backgroundImage: "url('/bg_flower.png')",
             backgroundSize: 'contain',
@@ -140,7 +141,7 @@ const HelperDashboard = () => {
           }}
         />
         <div 
-          className="absolute left-[-5%] bottom-[12%] w-[340px] h-[340px] opacity-[0.05] pointer-events-none select-none mix-blend-multiply"
+          className="absolute left-[-5%] bottom-[12%] w-[340px] h-[340px] opacity-[0.04] pointer-events-none select-none mix-blend-screen"
           style={{
             backgroundImage: "url('/bg_flower.png')",
             backgroundSize: 'contain',
@@ -149,8 +150,8 @@ const HelperDashboard = () => {
           }}
         />
 
-        {/* Static vector wave outline at the bottom (opacity increased slightly) */}
-        <div className="absolute bottom-0 inset-x-0 h-[220px] opacity-[0.06] text-emerald-800">
+        {/* Static vector wave outline at the bottom */}
+        <div className="absolute bottom-0 inset-x-0 h-[220px] opacity-[0.04] text-emerald-500">
           <svg className="w-full h-full" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path fill="currentColor" d="M0,160 L48,154.7 C96,149 192,139 288,144 C384,149 480,171 576,176 C672,181 768,171 864,154.7 C960,139 1056,117 1152,112 C1248,107 1344,117 1392,122.7 L1440,128 L1440,250 L1392,250 C1344,250 1248,250 1152,250 C1056,250 960,250 864,250 C768,250 672,250 576,250 C480,250 384,250 288,250 C192,250 96,250 48,250 L0,250 Z" />
           </svg>
@@ -165,24 +166,24 @@ const HelperDashboard = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative overflow-hidden rounded-3xl bg-white/80 backdrop-blur-md border border-emerald-100/40 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-[0_15px_30px_rgba(0,0,0,0.03)]"
+          className="relative overflow-hidden rounded-3xl bg-slate-950/45 backdrop-blur-md border border-emerald-950/30 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-[0_15px_30px_rgba(0,0,0,0.15)]"
         >
-          {/* Subtle Lotus line decoration */}
-          <div className="absolute right-[-40px] top-[-30px] opacity-[0.04] text-emerald-800 pointer-events-none rotate-12">
+          {/* Subtle Lotus decoration */}
+          <div className="absolute right-[-40px] top-[-30px] opacity-[0.03] text-emerald-500 pointer-events-none rotate-12">
             <svg width="180" height="180" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12,2C12,2 6,8 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8 12,2 12,2Z" />
             </svg>
           </div>
 
           <div className="space-y-1.5 max-w-xl">
-            <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs uppercase tracking-widest">
+            <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-widest">
               <Award size={14} />
               <span>Dedicated Caregiver Workspace</span>
             </div>
-            <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">
-              Welcome back, <span className="text-emerald-700">{activeUser.name.split(' ')[0]}</span> 👋
+            <h2 className="text-2xl md:text-3xl font-black text-slate-100 tracking-tight">
+              Welcome back, <span className="text-emerald-400">{activeUser.name.split(' ')[0]}</span> 👋
             </h2>
-            <p className="text-slate-500 text-xs italic font-medium leading-relaxed">
+            <p className="text-slate-400 text-xs italic font-medium leading-relaxed">
               "To care for those who once cared for us is one of the highest honors." — Thank you for your warmth and service today.
             </p>
           </div>
@@ -191,12 +192,12 @@ const HelperDashboard = () => {
           <div className="flex flex-wrap items-center gap-4">
             
             {/* Clock Widget */}
-            <div className="flex items-center gap-3 px-3 py-2 rounded-2xl bg-white/50 border border-slate-100 text-xs font-semibold text-slate-650 shadow-sm">
-              <div className="flex items-center gap-1 text-emerald-600">
+            <div className="flex items-center gap-3 px-3 py-2 rounded-2xl bg-slate-900/40 border border-emerald-950/20 text-xs font-semibold text-slate-300 shadow-sm">
+              <div className="flex items-center gap-1 text-emerald-400">
                 <Sun size={14} />
                 <span>24°C Calm</span>
               </div>
-              <div className="w-[1px] h-3 bg-slate-200" />
+              <div className="w-[1px] h-3 bg-emerald-950/20" />
               <div className="flex items-center gap-1.5">
                 <Clock size={13} />
                 <span>{time}</span>
@@ -206,17 +207,17 @@ const HelperDashboard = () => {
             {/* Check In / Out Buttons */}
             <div className="flex items-center gap-2">
               {isCheckedOut ? (
-                <div className="text-xs px-3.5 py-2 rounded-2xl bg-slate-100 text-slate-555 font-extrabold border border-slate-200">
+                <div className="text-xs px-3.5 py-2 rounded-2xl bg-slate-900/40 text-slate-400 font-extrabold border border-emerald-950/30">
                   Shift Closed ({todayAttendance.checkOut})
                 </div>
               ) : isCheckedIn ? (
                 <div className="flex items-center gap-2.5">
-                  <span className="text-[10px] uppercase font-black text-emerald-750 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 mr-1 shadow-sm">
+                  <span className="text-[10px] uppercase font-black text-emerald-400 bg-emerald-950/40 px-3 py-1.5 rounded-full border border-emerald-500/20 mr-1 shadow-sm">
                     ● Active Shift
                   </span>
                   <button 
                     onClick={() => checkOutHelper(activeUser.id)}
-                    className="flex items-center gap-1.5 px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-650 text-xs font-extrabold rounded-2xl border border-rose-250/30 transition-all duration-300 shadow-sm"
+                    className="flex items-center gap-1.5 px-4 py-2 bg-rose-950/30 hover:bg-rose-900/40 text-rose-350 text-xs font-extrabold rounded-2xl border border-rose-900/30 transition-all duration-300 shadow-sm"
                   >
                     <LogOut size={13} />
                     <span>Check Out</span>
@@ -240,11 +241,11 @@ const HelperDashboard = () => {
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white/80 backdrop-blur-md border border-emerald-100/40 rounded-[24px] p-10 text-center shadow-xl shadow-emerald-900/5"
+            className="bg-slate-950/45 backdrop-blur-md border border-emerald-950/30 rounded-[24px] p-10 text-center shadow-xl shadow-slate-950/50"
           >
             <AlertCircle size={44} className="text-amber-500 mx-auto mb-3.5" />
-            <h3 className="text-xl font-bold text-slate-800">No Patient Linked</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto mt-2 leading-relaxed font-semibold">
+            <h3 className="text-xl font-bold text-slate-200">No Patient Linked</h3>
+            <p className="text-xs text-slate-450 max-w-sm mx-auto mt-2 leading-relaxed font-semibold">
               You do not have a linked patient schedule. Please contact the administrator to bind your account to an Elder Patient.
             </p>
           </motion.div>
@@ -260,26 +261,26 @@ const HelperDashboard = () => {
                 onMouseLeave={() => handleCardMouseLeave('patient')}
                 style={{
                   ...tiltStyles.patient,
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)'
                 }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden"
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-slate-900/30 mouse-glow-container overflow-hidden"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
 
-                <div className="relative z-10 flex items-center justify-between border-b border-emerald-100/30 pb-4 mb-4">
+                <div className="relative z-10 flex items-center justify-between border-b border-emerald-950/30 pb-4 mb-4">
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Assigned Patient</h3>
                   <Heart className="text-emerald-500 fill-emerald-500" size={14} />
                 </div>
 
                 <div className="relative z-10 flex items-center gap-4">
                   {/* Patient initials Avatar with Care Progress Ring */}
-                  <div className="relative w-16 h-16 flex items-center justify-center bg-gradient-to-tr from-emerald-100 to-mint rounded-full border border-emerald-200/50 shadow-sm text-emerald-800 font-black text-lg">
+                  <div className="relative w-16 h-16 flex items-center justify-center bg-gradient-to-tr from-[#0F291B] to-[#132A1C] rounded-full border border-emerald-950/30 shadow-sm text-emerald-400 font-black text-lg">
                     {assignedPatient.name.split(' ').map(n=>n[0]).join('')}
                     {/* Completion Ring */}
                     <svg className="absolute inset-0 w-full h-full -rotate-90">
-                      <circle cx="32" cy="32" r="30" fill="none" stroke="#e2e8f0" strokeWidth="2.5" />
-                      <circle cx="32" cy="32" r="30" fill="none" stroke="#16a34a" strokeWidth="2.5" 
+                      <circle cx="32" cy="32" r="30" fill="none" stroke="#12251a" strokeWidth="2.5" />
+                      <circle cx="32" cy="32" r="30" fill="none" stroke="#10b981" strokeWidth="2.5" 
                               strokeDasharray="188.4" 
                               strokeDashoffset={188.4 - (188.4 * completionPercentage) / 100} 
                               strokeLinecap="round"
@@ -287,14 +288,14 @@ const HelperDashboard = () => {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-black text-lg text-slate-800 group-hover:text-emerald-700 transition-colors">
+                    <h4 className="font-black text-lg text-slate-100 group-hover:text-emerald-400 transition-colors">
                       {assignedPatient.name}
                     </h4>
                     <div className="flex items-center gap-2 mt-1.5">
-                      <span className="text-[9px] font-black uppercase text-amber-800 bg-amber-50 border border-amber-200/50 px-2 py-0.5 rounded-md">
+                      <span className="text-[9px] font-black uppercase text-amber-350 bg-amber-950/20 border border-amber-500/20 px-2 py-0.5 rounded-md">
                         Blood: {assignedPatient.bloodGroup}
                       </span>
-                      <span className="text-[9px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                      <span className="text-[9px] font-bold text-slate-400 bg-slate-900/60 px-2 py-0.5 rounded-md">
                         {assignedPatient.age} Yrs Old
                       </span>
                     </div>
@@ -305,11 +306,11 @@ const HelperDashboard = () => {
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Primary Conditions</p>
                   <div className="flex flex-wrap gap-1.5">
                     {assignedPatient.disease ? assignedPatient.disease.split(',').map((cond, idx) => (
-                      <span key={idx} className="text-[10px] font-bold text-emerald-700 bg-emerald-50/50 border border-emerald-100/40 px-2.5 py-1 rounded-full">
+                      <span key={idx} className="text-[10px] font-bold text-emerald-400 bg-emerald-950/30 border border-emerald-900/20 px-2.5 py-1 rounded-full">
                         {cond.trim()}
                       </span>
                     )) : (
-                      <span className="text-[10px] font-bold text-slate-500 bg-slate-50 p-1.5 rounded-lg w-full">
+                      <span className="text-[10px] font-bold text-slate-500 bg-slate-900/30 p-1.5 rounded-lg w-full">
                         None registered
                       </span>
                     )}
@@ -323,20 +324,20 @@ const HelperDashboard = () => {
                 onMouseLeave={() => handleCardMouseLeave('vitals')}
                 style={{
                   ...tiltStyles.vitals,
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)'
                 }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden"
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-slate-900/30 mouse-glow-container overflow-hidden"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
 
-                <div className="relative z-10 flex items-center gap-2 border-b border-emerald-100/30 pb-4 mb-4">
-                  <Activity className="text-emerald-600" size={18} />
-                  <h3 className="text-sm font-bold text-slate-800">Log Health Vitals</h3>
+                <div className="relative z-10 flex items-center gap-2 border-b border-emerald-950/30 pb-4 mb-4">
+                  <Activity className="text-emerald-400" size={18} />
+                  <h3 className="text-sm font-bold text-slate-200">Log Health Vitals</h3>
                 </div>
 
                 {vitalsMsg && (
-                  <div className="relative z-10 mb-4 p-3 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-800 shadow-sm animate-scale">
+                  <div className="relative z-10 mb-4 p-3 bg-emerald-950/30 border border-emerald-900/20 rounded-2xl flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-400 shadow-sm">
                     <Check size={14} className="bg-emerald-600 text-white rounded-full p-0.5" />
                     <span>{vitalsMsg}</span>
                   </div>
@@ -350,10 +351,10 @@ const HelperDashboard = () => {
                         value={systolic}
                         onChange={(e) => setSystolic(e.target.value)}
                         placeholder="e.g. 120"
-                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/60 border border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-slate-950/40 border border-emerald-950/30 focus:border-emerald-500 focus:outline-none text-slate-200 text-xs font-semibold shadow-sm transition-colors"
                         required
                       />
-                      <label className="absolute left-3 top-[-7px] bg-[#f5f8f6] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                      <label className="absolute left-3 top-[-7px] bg-[#0A130F] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-400">
                         BP Systolic
                       </label>
                     </div>
@@ -363,10 +364,10 @@ const HelperDashboard = () => {
                         value={diastolic}
                         onChange={(e) => setDiastolic(e.target.value)}
                         placeholder="e.g. 80"
-                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/60 border border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-slate-950/40 border border-emerald-950/30 focus:border-emerald-500 focus:outline-none text-slate-200 text-xs font-semibold shadow-sm transition-colors"
                         required
                       />
-                      <label className="absolute left-3 top-[-7px] bg-[#f5f8f6] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                      <label className="absolute left-3 top-[-7px] bg-[#0A130F] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-400">
                         BP Diastolic
                       </label>
                     </div>
@@ -379,10 +380,10 @@ const HelperDashboard = () => {
                         value={sugar}
                         onChange={(e) => setSugar(e.target.value)}
                         placeholder="e.g. 110"
-                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/60 border border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-slate-950/40 border border-emerald-950/30 focus:border-emerald-500 focus:outline-none text-slate-200 text-xs font-semibold shadow-sm transition-colors"
                         required
                       />
-                      <label className="absolute left-3 top-[-7px] bg-[#f5f8f6] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                      <label className="absolute left-3 top-[-7px] bg-[#0A130F] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-400">
                         Sugar (mg/dL)
                       </label>
                     </div>
@@ -392,10 +393,10 @@ const HelperDashboard = () => {
                         value={pulse}
                         onChange={(e) => setPulse(e.target.value)}
                         placeholder="e.g. 72"
-                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/60 border border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-slate-950/40 border border-emerald-950/30 focus:border-emerald-500 focus:outline-none text-slate-200 text-xs font-semibold shadow-sm transition-colors"
                         required
                       />
-                      <label className="absolute left-3 top-[-7px] bg-[#f5f8f6] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                      <label className="absolute left-3 top-[-7px] bg-[#0A130F] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-400">
                         Pulse (bpm)
                       </label>
                     </div>
@@ -409,7 +410,7 @@ const HelperDashboard = () => {
                     {!isCheckedIn ? 'Check-In to Save Vitals' : 'Save Health Vitals'}
                   </button>
                 </form>
-              </div >
+              </div>
 
             </div>
 
@@ -420,46 +421,46 @@ const HelperDashboard = () => {
                 onMouseLeave={() => handleCardMouseLeave('checklist')}
                 style={{
                   ...tiltStyles.checklist,
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)'
                 }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-slate-900/30 mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
 
                 <div className="relative z-10">
-                  <div className="flex items-center justify-between border-b border-emerald-100/30 pb-4 mb-4">
+                  <div className="flex items-center justify-between border-b border-emerald-950/30 pb-4 mb-4">
                     <div className="flex items-center gap-2">
-                      <CheckSquare className="text-emerald-600" size={18} />
-                      <h3 className="text-sm font-bold text-slate-800">Shift Duty Checklist</h3>
+                      <CheckSquare className="text-emerald-400" size={18} />
+                      <h3 className="text-sm font-bold text-slate-200">Shift Duty Checklist</h3>
                     </div>
-                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/30 px-2.5 py-1 rounded-full border border-emerald-900/20">
                       {completedTasksCount}/{totalTasksCount} Done ({completionPercentage}%)
                     </span>
                   </div>
 
-                  <div className="w-full h-1.5 bg-slate-100 rounded-full mb-5 overflow-hidden">
+                  <div className="w-full h-1.5 bg-[#12251a] rounded-full mb-5 overflow-hidden">
                     <div 
-                      className="h-full bg-emerald-600 rounded-full transition-all duration-500 ease-out" 
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500 ease-out" 
                       style={{ width: `${completionPercentage}%` }} 
                     />
                   </div>
 
                   {patientTasks.length === 0 ? (
-                    <p className="text-xs text-slate-400 py-10 text-center font-medium">No shift tasks configured for today.</p>
+                    <p className="text-xs text-slate-450 py-10 text-center font-medium">No shift tasks configured for today.</p>
                   ) : (
                     <div className="space-y-3 max-h-[220px] overflow-y-auto pr-1 no-scrollbar">
                       {patientTasks.map(task => (
-                        <div key={task.id} className="relative flex items-start gap-3 p-3 rounded-2xl bg-white/50 border border-slate-200/50 hover:bg-emerald-50/20 hover:border-emerald-100/20 transition-all duration-300">
+                        <div key={task.id} className="relative flex items-start gap-3 p-3 rounded-2xl bg-slate-950/30 border border-emerald-950/10 hover:bg-emerald-950/20 hover:border-emerald-900/20 transition-all duration-300">
                           <input 
                             type="checkbox" 
                             checked={task.completed}
                             disabled={!isCheckedIn || isCheckedOut}
                             onChange={() => toggleTask(task.id)}
-                            className="mt-0.5 w-4 h-4 rounded-full border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                            className="mt-0.5 w-4 h-4 rounded-full border-slate-700 bg-slate-950/40 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                           />
                           <div className="leading-tight">
-                            <p className={`text-xs font-bold transition-all duration-300 ${task.completed ? 'line-through text-slate-400 opacity-60' : 'text-slate-850'}`}>
+                            <p className={`text-xs font-bold transition-all duration-300 ${task.completed ? 'line-through text-slate-500 opacity-60' : 'text-slate-200'}`}>
                               {task.task}
                             </p>
                             <span className="text-[9px] text-slate-400 font-bold mt-0.5 block">{task.time}</span>
@@ -471,7 +472,7 @@ const HelperDashboard = () => {
                 </div>
 
                 {/* Add Custom Task Form */}
-                <form onSubmit={handleAddTask} className="relative z-10 border-t border-emerald-100/30 pt-4 mt-6 flex flex-col gap-3">
+                <form onSubmit={handleAddTask} className="relative z-10 border-t border-emerald-950/30 pt-4 mt-6 flex flex-col gap-3">
                   <div className="flex gap-2">
                     <input 
                       type="text" 
@@ -479,7 +480,7 @@ const HelperDashboard = () => {
                       onChange={(e) => setCustomTask(e.target.value)}
                       placeholder="Add custom task..."
                       disabled={!isCheckedIn || isCheckedOut}
-                      className="flex-1 px-3 py-2 rounded-xl bg-white/60 border border-slate-200 focus:outline-none focus:border-emerald-500 text-xs font-semibold text-slate-700 disabled:opacity-50 shadow-sm"
+                      className="flex-1 px-3 py-2 rounded-xl bg-slate-950/40 border border-emerald-950/30 focus:outline-none focus:border-emerald-500 text-xs font-semibold text-slate-300 disabled:opacity-50 shadow-sm"
                     />
                     <input 
                       type="text" 
@@ -487,13 +488,13 @@ const HelperDashboard = () => {
                       onChange={(e) => setTaskTime(e.target.value)}
                       placeholder="e.g. 09:00 AM"
                       disabled={!isCheckedIn || isCheckedOut}
-                      className="w-24 px-2 py-2 rounded-xl bg-white/60 border border-slate-200 focus:outline-none focus:border-emerald-500 text-[10px] font-bold text-center text-slate-700 disabled:opacity-50 shadow-sm"
+                      className="w-24 px-2 py-2 rounded-xl bg-slate-950/40 border border-emerald-950/30 focus:outline-none focus:border-emerald-500 text-[10px] font-bold text-center text-slate-305 disabled:opacity-50 shadow-sm"
                     />
                   </div>
                   <button 
                     type="submit"
                     disabled={!isCheckedIn || isCheckedOut}
-                    className="w-full py-2.5 bg-[#DDF7E3] hover:bg-emerald-100 text-emerald-800 border border-emerald-250/20 font-extrabold text-xs rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
+                    className="w-full py-2.5 bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-400 border border-emerald-900/30 font-extrabold text-xs rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
                   >
                     <Plus size={12} />
                     <span>Add Shift Task</span>
@@ -509,20 +510,20 @@ const HelperDashboard = () => {
                 onMouseLeave={() => handleCardMouseLeave('medicine')}
                 style={{
                   ...tiltStyles.medicine,
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)'
                 }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden min-h-[460px]"
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-slate-900/30 mouse-glow-container overflow-hidden min-h-[460px]"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
 
-                <div className="relative z-10 flex items-center gap-2 border-b border-emerald-100/30 pb-4 mb-4">
-                  <Pill className="text-emerald-600" size={18} />
-                  <h3 className="text-sm font-bold text-slate-800">Medicine (Dava) Schedule</h3>
+                <div className="relative z-10 flex items-center gap-2 border-b border-emerald-950/30 pb-4 mb-4">
+                  <Pill className="text-emerald-400" size={18} />
+                  <h3 className="text-sm font-bold text-slate-200">Medicine (Dava) Schedule</h3>
                 </div>
 
                 {patientMedicines.length === 0 ? (
-                  <p className="relative z-10 text-xs text-slate-400 py-12 text-center font-medium">No medicine schedule configured.</p>
+                  <p className="relative z-10 text-xs text-slate-450 py-12 text-center font-medium">No medicine schedule configured.</p>
                 ) : (
                   <div className="relative z-10 mt-4 space-y-4 max-h-[350px] overflow-y-auto pr-1 no-scrollbar">
                     {patientMedicines.map((med, idx) => {
@@ -530,25 +531,25 @@ const HelperDashboard = () => {
                       const isMorning = lowerTime.includes('am') || lowerTime.includes('morning');
                       const isNight = lowerTime.includes('pm') && (lowerTime.includes('8') || lowerTime.includes('9') || lowerTime.includes('10') || lowerTime.includes('night'));
                       
-                      let tagStyles = "bg-teal-50 text-teal-800 border-teal-100";
-                      if (isMorning) tagStyles = "bg-amber-50 text-amber-800 border-amber-250/50";
-                      else if (isNight) tagStyles = "bg-indigo-50 text-indigo-800 border-indigo-150/40";
+                      let tagStyles = "bg-teal-950/30 text-teal-350 border-teal-900/20";
+                      if (isMorning) tagStyles = "bg-amber-950/30 text-amber-350 border-amber-900/20";
+                      else if (isNight) tagStyles = "bg-indigo-950/30 text-indigo-350 border-indigo-900/20";
 
                       return (
                         <div key={med.id} className="relative pl-5 group/item">
-                          <div className="absolute left-[3px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm z-10" />
+                          <div className="absolute left-[3px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-slate-900 shadow-sm z-10" />
                           
                           {idx < patientMedicines.length - 1 && (
-                            <div className="absolute left-[7px] top-1/2 bottom-[-28px] w-[1px] border-l border-dashed border-emerald-250/50" />
+                            <div className="absolute left-[7px] top-1/2 bottom-[-28px] w-[1px] border-l border-dashed border-emerald-950/30" />
                           )}
 
-                          <div className="p-3.5 rounded-2xl bg-white/50 border border-slate-200/50 flex flex-col gap-1 hover:bg-emerald-50/15 hover:border-emerald-100/30 transition-all duration-300 shadow-sm relative overflow-hidden">
+                          <div className="p-3.5 rounded-2xl bg-slate-950/30 border border-emerald-950/10 flex flex-col gap-1 hover:bg-emerald-950/20 hover:border-emerald-900/20 transition-all duration-300 shadow-sm relative overflow-hidden">
                             <span className={`text-[9px] uppercase font-black px-2.5 py-0.5 rounded border w-fit ${tagStyles}`}>
                               {med.time}
                             </span>
                             <div className="flex items-center justify-between mt-1">
-                              <h4 className="font-extrabold text-xs text-slate-800">{med.name}</h4>
-                              <span className="text-[9px] font-bold text-slate-400 italic">Qty: 1 Tab</span>
+                              <h4 className="font-extrabold text-xs text-slate-200">{med.name}</h4>
+                              <span className="text-[9px] font-bold text-slate-450 italic">Qty: 1 Tab</span>
                             </div>
                             <p className="text-[9px] text-slate-400 font-bold mt-0.5 uppercase tracking-wider">{med.company}</p>
                           </div>
@@ -564,27 +565,27 @@ const HelperDashboard = () => {
         )}
 
         {/* ================= BOTTOM MOTIVATION WELLNESS CARD ================= */}
-        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-white/90 via-white/50 to-emerald-50/30 backdrop-blur-md border border-emerald-100/40 p-8 md:p-12 text-center shadow-[0_20px_45px_rgba(0,0,0,0.04)] max-w-5xl mx-auto flex flex-col items-center justify-center">
+        <div className="relative overflow-hidden rounded-[32px] bg-slate-950/45 backdrop-blur-md border border-emerald-950/30 p-8 md:p-12 text-center shadow-[0_20px_45px_rgba(0,0,0,0.2)] max-w-5xl mx-auto flex flex-col items-center justify-center">
           {/* Eucalyptus Branch Left */}
-          <div className="absolute left-[-20px] bottom-[-20px] opacity-[0.06] text-emerald-800 rotate-45 pointer-events-none select-none">
+          <div className="absolute left-[-20px] bottom-[-20px] opacity-[0.03] text-emerald-500 rotate-45 pointer-events-none select-none">
             <svg width="220" height="220" viewBox="0 0 24 24" fill="currentColor">
               <path d="M17,8C8,10 5.9,16.17 3.82,21.34L2.18,20.66C4.26,15.49 6.34,9 15.67,7C12.5,5 9,5 5,7L4,5C9,3 13,3 17,5C20,3.7 22.3,4.3 22.3,4.3C22.3,4.3 21.7,7 17,8Z" />
             </svg>
           </div>
 
-          <div className="relative w-28 h-20 mb-4 flex items-center justify-center text-emerald-600/25 pointer-events-none">
+          <div className="relative w-28 h-20 mb-4 flex items-center justify-center text-emerald-500/20 pointer-events-none">
             <svg width="84" height="84" viewBox="0 0 24 24" fill="currentColor" className="relative z-10">
               <path d="M12,2C12,2 6,8 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8 12,2 12,2Z" />
             </svg>
           </div>
 
-          <p className="text-sm font-black text-emerald-800 uppercase tracking-widest mb-2">
+          <p className="text-sm font-black text-emerald-400 uppercase tracking-widest mb-2">
             Daily Reflection
           </p>
           
-          <h3 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight max-w-2xl leading-relaxed">
+          <h3 className="text-xl md:text-2xl font-black text-slate-100 tracking-tight max-w-2xl leading-relaxed">
             "You make a difference every day. <br />
-            <span className="text-emerald-700">Every act of kindness heals another life.</span>"
+            <span className="text-emerald-450">Every act of kindness heals another life.</span>"
           </h3>
           
           <p className="text-xs text-slate-400 mt-3 font-semibold">
