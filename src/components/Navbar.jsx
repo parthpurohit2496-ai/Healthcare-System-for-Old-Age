@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
-import { LogOut, User, Bell } from 'lucide-react';
+import { LogOut, User, Bell, HeartPulse } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
@@ -30,9 +30,10 @@ const Navbar = () => {
 
   return (
     <header className={`h-16 px-6 flex items-center justify-between shadow-md transition-colors duration-300 ${getThemeClasses()}`}>
-      <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
-        <span className="font-bold text-xl tracking-wide">Karmyog Foundation</span>
-        <span className="text-xs px-2 py-0.5 rounded bg-white/20 uppercase font-semibold">v2.0</span>
+      <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
+        <HeartPulse size={22} className="animate-pulse" />
+        <span className="font-extrabold text-xl tracking-wide">Health Care</span>
+        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/20 uppercase font-semibold">v2.0</span>
       </div>
 
       {activeUser ? (

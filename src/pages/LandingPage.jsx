@@ -26,7 +26,7 @@ const LandingPage = () => {
         <div className="flex items-center gap-2">
           <Heart className="text-red-500 fill-red-500 animate-pulse" size={24} />
           <span className="font-extrabold text-xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-            KARMYOG FOUNDATION
+            HEALTH CARE NETWORK
           </span>
         </div>
         <div className="text-sm font-semibold text-slate-400">Healthcare Portal v2.0</div>
@@ -89,7 +89,7 @@ const LandingPage = () => {
       </main>
 
       <footer className="py-8 border-t border-slate-800/60 text-center text-xs text-slate-500 z-10 bg-slate-950/20">
-        &copy; {new Date().getFullYear()} Karmyog Foundation. All rights reserved. Designed for elderly support and care excellence.
+        &copy; {new Date().getFullYear()} Health Care Network. All rights reserved. Designed for elderly support and care excellence.
       </footer>
     </div>
   );

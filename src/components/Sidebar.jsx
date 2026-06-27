@@ -160,7 +160,10 @@ const Sidebar = () => {
       </div>
 
       <div className="px-6 pt-4 border-t border-slate-100 flex flex-col gap-1 text-[11px] text-slate-400">
-        <p className="font-semibold">Karmyog Foundation</p>
+        <p className="font-bold flex items-center gap-1 text-slate-700">
+          <HeartPulse size={12} className="text-red-500" />
+          <span>Health Care Network</span>
+        </p>
         <p>Logged in: {activeUser.name}</p>
       </div>
     </aside>
