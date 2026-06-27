@@ -543,30 +543,32 @@ const OldPersonDashboard = () => {
               onMouseLeave={() => handleCardMouseLeave('meds')}
               style={{
                 ...tiltStyles.meds,
-                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.04)'
+                boxShadow: '0 25px 50px rgba(124, 58, 237, 0.15)'
               }}
-              className="group border-glow-wrapper card-3d relative rounded-3xl p-6 bg-white/85 backdrop-blur-md border border-purple-300/45 hover:bg-white/90 mouse-glow-container overflow-hidden premium-card-shadow"
+              className="group border-glow-wrapper card-3d relative rounded-3xl p-6 bg-gradient-to-br from-[#7C3AED] via-[#6D28D9] to-[#4F46E5] border border-purple-400/30 hover:shadow-[0_30px_60px_rgba(124,58,237,0.25)] mouse-glow-container overflow-hidden premium-card-shadow"
             >
-              <div className="border-glow-element" style={{ '--glow-color': '#a855f7' }} />
+              <div className="border-glow-element" style={{ '--glow-color': '#fcd34d' }} />
               <div className="mouse-glow-bg" />
               <div className="animate-shine-sweep" />
 
               <div className="relative z-10 w-full">
-                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest border-b border-purple-100/35 pb-2 flex items-center gap-2">
-                  <img src="/capsule.png" alt="capsule" className="w-5 h-5 object-contain" />
+                <h3 className="text-sm font-black text-white uppercase tracking-widest border-b border-white/20 pb-3.5 flex items-center gap-2">
+                  <img src="/capsule.png" alt="capsule" className="w-5 h-5 object-contain brightness-0 invert" />
                   <span>Active Medicines</span>
                 </h3>
                 {patientMeds.length === 0 ? (
-                  <p className="text-xs text-slate-400 py-6 text-center font-medium">No medicine schedule configured.</p>
+                  <p className="text-xs text-purple-200 py-6 text-center font-medium">No medicine schedule configured.</p>
                 ) : (
-                  <div className="mt-3 space-y-2.5">
+                  <div className="mt-4 space-y-3">
                     {patientMeds.map(med => (
-                      <div key={med.id} className="p-3 rounded-2xl bg-white/95 border border-purple-100/60 text-xs text-slate-855 flex flex-col gap-0.5 shadow-sm relative overflow-hidden">
+                      <div key={med.id} className="p-3.5 rounded-2xl bg-white/12 backdrop-blur-md border border-white/20 text-xs text-white shadow-md relative overflow-hidden group/item">
                         {/* Custom capsule image badge */}
-                        <img src="/capsule.png" alt="capsule" className="absolute right-2 top-2 w-5.5 h-5.5 object-contain opacity-70 pointer-events-none" />
-                        <h4 className="font-extrabold text-slate-900 pr-6">{med.name}</h4>
-                        <p className="text-[10px] text-slate-450 font-semibold">Company: {med.company}</p>
-                        <p className="text-[10px] text-purple-750 font-black mt-1 uppercase tracking-wider">Schedule: {med.time}</p>
+                        <img src="/capsule.png" alt="capsule" className="absolute right-2 top-2.5 w-6 h-6 object-contain opacity-90 brightness-0 invert pointer-events-none group-hover/item:scale-110 transition-transform duration-300" />
+                        <h4 className="font-extrabold text-base text-white pr-8 tracking-tight">{med.name}</h4>
+                        <p className="text-[10px] text-purple-200 font-semibold mt-0.5">Company: {med.company}</p>
+                        <div className="mt-2.5 w-fit px-3 py-1 rounded-full bg-yellow-400/20 border border-yellow-300/40 text-[10px] text-yellow-350 font-black uppercase tracking-wider">
+                          Schedule: {med.time}
+                        </div>
                       </div>
                     ))}
                   </div>
