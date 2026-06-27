@@ -572,8 +572,8 @@ const HelperDashboard = () => {
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
 
-                <div className="relative z-10 flex items-center gap-2 border-b border-emerald-100/30 pb-4 mb-4">
-                  <Pill className="text-emerald-600" size={18} />
+                <div className="relative z-10 flex items-center gap-2.5 border-b border-emerald-100/30 pb-4 mb-4">
+                  <img src="/capsule.png" alt="capsule" className="w-5 h-5 object-contain" />
                   <h3 className="text-sm font-bold text-slate-800">Medicine (Dava) Schedule</h3>
                 </div>
 
@@ -600,11 +600,14 @@ const HelperDashboard = () => {
                           )}
 
                           <div className="p-3.5 rounded-2xl bg-white/50 border border-slate-200/50 flex flex-col gap-1 hover:bg-emerald-50/15 hover:border-emerald-100/30 transition-all duration-300 shadow-sm relative overflow-hidden">
+                            {/* Premium generated capsule image */}
+                            <img src="/capsule.png" alt="capsule" className="absolute right-2 top-2.5 w-6 h-6 object-contain pointer-events-none opacity-80" />
+                            
                             <span className={`text-[9px] uppercase font-black px-2.5 py-0.5 rounded border w-fit ${tagStyles}`}>
                               {med.time}
                             </span>
                             <div className="flex items-center justify-between mt-1">
-                              <h4 className="font-extrabold text-xs text-slate-800">{med.name}</h4>
+                              <h4 className="font-extrabold text-xs text-slate-800 pr-6">{med.name}</h4>
                               <span className="text-[9px] font-bold text-slate-400 italic">Qty: 1 Tab</span>
                             </div>
                             <p className="text-[9px] text-slate-400 font-bold mt-0.5 uppercase tracking-wider">{med.company}</p>
