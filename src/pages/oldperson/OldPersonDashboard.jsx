@@ -254,9 +254,9 @@ const OldPersonDashboard = () => {
               ) : (
                 <button 
                   onClick={handleSosTrigger}
-                  className="flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-red-650 to-red-700 hover:from-red-600 hover:to-red-650 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-md shadow-red-500/10 transition-all active:scale-[0.97]"
+                  className="flex items-center gap-2 px-6 py-3.5 bg-red-950/35 backdrop-blur-md border border-red-500/40 text-red-200 hover:text-white hover:bg-red-900/45 hover:border-red-400/55 font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-[0_12px_24px_rgba(239,68,68,0.18)] transition-all active:scale-[0.97]"
                 >
-                  <AlertTriangle size={15} />
+                  <AlertTriangle size={15} className="text-red-400 animate-pulse" />
                   <span>EMERGENCY SOS</span>
                 </button>
               )}
