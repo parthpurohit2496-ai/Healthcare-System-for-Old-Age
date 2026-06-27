@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,23 +7,183 @@
 @layer base {
   body {
     font-family: 'Inter', sans-serif;
-    @apply bg-slate-50 text-slate-900;
+    background-color: #0b1220;
+    @apply text-slate-100;
   }
 }
 
-/* Glassmorphism utility card styling */
-.glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+/* Glassmorphism Card Styling */
+.glass-card-premium {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.glass-card-dark {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Mouse-follow glow effect container */
+.mouse-glow-container {
+  position: relative;
+}
+
+.mouse-glow-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+    rgba(255, 255, 255, 0.04),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.mouse-glow-container:hover .mouse-glow-bg {
+  opacity: 1;
+}
+
+/* Floating Particles (Landing Background) */
+@keyframes floatParticle {
+  0% {
+    transform: translateY(100vh) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-20vh) translateX(50px) scale(1);
+    opacity: 0;
+  }
+}
+
+.bg-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+  animation: floatParticle var(--duration) ease-in-out var(--delay) infinite;
+}
+
+/* Wave Background Animations */
+@keyframes waveSlow {
+  0%, 100% {
+    transform: translateX(0) translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-2%) translateY(10px) scaleY(1.02);
+  }
+}
+@keyframes waveMedium {
+  0%, 100% {
+    transform: translateX(0) translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(2%) translateY(-8px) scaleY(0.98);
+  }
+}
+
+.animate-wave-slow {
+  animation: waveSlow 25s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.animate-wave-medium {
+  animation: waveMedium 18s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* Slowly Floating & Pulsing Icons */
+@keyframes floatPulse {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.03);
+  }
+}
+.animate-float-pulse {
+  animation: floatPulse 4s ease-in-out infinite;
+}
+
+/* Scanning scanline glow inside cards */
+@keyframes lineGlow {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+.animate-line-glow {
+  position: absolute;
+  width: 70%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  animation: lineGlow 5s linear infinite;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* Rotating Gradient Border on Card Hover */
+@keyframes borderRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.border-glow-wrapper {
+  position: relative;
+  z-index: 10;
+}
+
+.border-glow-element {
+  position: absolute;
+  inset: -1px;
+  border-radius: 1.05rem;
+  padding: 1px;
+  background: transparent;
+  pointer-events: none;
+  z-index: 0;
+  transition: background 0.5s ease;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+}
+
+.border-glow-wrapper:hover .border-glow-element {
+  background: conic-gradient(from var(--border-angle, 0deg), transparent 60%, var(--glow-color) 100%);
+  animation: borderRotate 3s linear infinite;
+}
+
+/* Background light reflection motion */
+@keyframes lightMove {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(10vw, 5vh) scale(1.1);
+  }
+}
+
+.animate-light-move {
+  animation: lightMove 20s ease-in-out infinite;
+}
+
+/* Custom premium color glow boxes */
+.glow-box {
+  filter: blur(60px);
+  pointer-events: none;
+  opacity: 0.12;
 }
 
 /* Pulse animation for SOS alert button */
@@ -42,23 +202,7 @@
   animation: pulse-sos 2s infinite;
 }
 
-/* Smooth page transitions */
-.fade-in-up {
-  animation: fadeInUp 0.4s ease-out forwards;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Hide scrollbar for clean layout views */
+/* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -66,117 +210,3 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
-/* Floating Card Animation */
-@keyframes cardFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-.animate-card-float {
-  animation: cardFloat 5s ease-in-out infinite;
-}
-
-/* Mirror Shine Effect */
-.mirror-shine {
-  position: relative;
-  overflow: hidden;
-}
-
-.mirror-shine::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: skewX(-20deg);
-  pointer-events: none;
-}
-
-.mirror-shine:hover::after {
-  left: 150%;
-  transition: all 1.4s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-/* Blinking Logo Animation */
-@keyframes blinkLogo {
-  0%, 100% {
-    opacity: 1;
-    filter: brightness(1.2) drop-shadow(0 0 12px currentColor);
-  }
-  50% {
-    opacity: 0.4;
-    filter: brightness(0.8) drop-shadow(0 0 2px currentColor);
-  }
-}
-
-.logo-blink-hover:hover {
-  animation: blinkLogo 0.8s infinite ease-in-out;
-}
-
-/* Wave Floating Animations */
-@keyframes waveSlow {
-  0%, 100% {
-    transform: translateX(0) translateY(0) scale(1);
-  }
-  50% {
-    transform: translateX(-2.5%) translateY(4px) scale(1.015);
-  }
-}
-@keyframes waveMedium {
-  0%, 100% {
-    transform: translateX(0) translateY(0) scale(1);
-  }
-  50% {
-    transform: translateX(2.5%) translateY(-5px) scale(0.985);
-  }
-}
-
-.animate-wave-slow {
-  animation: waveSlow 22s ease-in-out infinite;
-  transform-origin: bottom center;
-}
-.animate-wave-medium {
-  animation: waveMedium 16s ease-in-out infinite;
-  transform-origin: bottom center;
-}
-
-/* Orbit Planetary Spin Animation */
-@keyframes orbitSpin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-orbit-spin {
-  animation: orbitSpin 18s linear infinite;
-  transform-origin: center center;
-}
-
-/* Neon Glow Premium Shadows */
-.premium-glow-purple {
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.2);
-}
-.premium-glow-teal {
-  box-shadow: 0 0 20px rgba(20, 184, 166, 0.4), inset 0 0 10px rgba(20, 184, 166, 0.2);
-}
-.premium-glow-pink {
-  box-shadow: 0 0 20px rgba(236, 72, 153, 0.4), inset 0 0 10px rgba(236, 72, 153, 0.2);
-}
-
-
-
