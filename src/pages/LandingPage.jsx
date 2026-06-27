@@ -8,10 +8,10 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const { activeUser } = useContext(AppContext);
 
-  // Parallax state based on mouse coordinates for page background
+  // Parallax state based on mouse coordinates for background layers
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // 3D Tilt state for the three cards
+  // 3D Tilt state for the cards
   const [tiltStyles, setTiltStyles] = useState({
     admin: {},
     helper: {},
@@ -33,7 +33,7 @@ const LandingPage = () => {
     }
   }, [activeUser, navigate]);
 
-  // Global mouse move listener for parallax background layers
+  // Global mouse move listener for parallax background
   useEffect(() => {
     const handleGlobalMouseMove = (e) => {
       const { innerWidth, innerHeight } = window;
@@ -46,20 +46,19 @@ const LandingPage = () => {
     return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
   }, []);
 
-  // Card Mouse Move Handler (Mouse Tilt & Follow Glow)
+  // Card Mouse Move (Mouse Tilt & Follow Glow)
   const handleCardMouseMove = (e, key) => {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    // Relative position from center: range [-1, 1]
+    // Relative coordinates [-1, 1]
     const xc = rect.width / 2;
     const yc = rect.height / 2;
     const dx = (x - xc) / xc;
     const dy = (y - yc) / yc;
 
-    // Tilt angles (max 8 degrees for premium restraint)
     const tiltX = -dy * 8;
     const tiltY = dx * 8;
 
@@ -74,7 +73,7 @@ const LandingPage = () => {
     }));
   };
 
-  // Card Mouse Leave (Reset Tilt)
+  // Card Mouse Leave
   const handleCardMouseLeave = (key) => {
     setTiltStyles(prev => ({
       ...prev,
@@ -85,7 +84,7 @@ const LandingPage = () => {
     }));
   };
 
-  // Card Click Handler (Triggers Ripple + Navigates)
+  // Card Click Handler
   const handleCardClick = (e, key, route) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -96,7 +95,6 @@ const LandingPage = () => {
       [key]: { x, y }
     }));
 
-    // Wait for ripple animation to complete before route navigation
     setTimeout(() => {
       setRipples(prev => ({
         ...prev,
@@ -124,36 +122,37 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-[#0b1220] flex flex-col justify-between text-slate-100 relative overflow-hidden select-none">
       
-      {/* ================= BACKGROUND LAYERS (PARALLAX & GLOWS) ================= */}
+      {/* ================= BACKGROUND LAYERS (AURORA, PARALLAX, & BEAMS) ================= */}
       
-      {/* 1. Deep Mesh Gradient Blobs */}
+      {/* 1. Aurora Animated Flowing Background Layers (Parallax Layer 1) */}
       <div 
-        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-700 ease-out"
+        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-700 ease-out opacity-25"
         style={{
-          transform: `translate(${mousePos.x * 25}px, ${mousePos.y * 20}px)`
+          transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 15}px)`
         }}
       >
-        <div className="absolute top-[10%] left-[5%] w-[500px] h-[500px] rounded-full bg-purple-900/10 blur-[130px] animate-light-move" />
-        <div className="absolute bottom-[10%] right-[5%] w-[550px] h-[550px] rounded-full bg-teal-950/15 blur-[140px] animate-light-move" style={{ animationDelay: '-8s' }} />
-        <div className="absolute top-[35%] left-[30%] w-[350px] h-[350px] rounded-full bg-blue-900/5 blur-[100px] animate-light-move" style={{ animationDelay: '-15s' }} />
+        {/* Aurora 1: Purple/Pink */}
+        <div className="absolute top-[10%] left-[-5%] w-[65vw] h-[65vw] bg-gradient-to-tr from-purple-600/10 via-pink-500/10 to-transparent blur-[130px] animate-aurora-1" />
+        {/* Aurora 2: Teal/Blue */}
+        <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[60vw] bg-gradient-to-bl from-teal-500/10 via-blue-500/10 to-transparent blur-[140px] animate-aurora-2" style={{ animationDelay: '-6s' }} />
       </div>
 
       {/* 2. Soft Animated Light Beams */}
       <div 
-        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-700 ease-out opacity-40"
+        className="absolute inset-0 z-0 pointer-events-none transition-transform duration-700 ease-out opacity-45"
         style={{
-          transform: `translate(${mousePos.x * 15}px, ${mousePos.y * 10}px)`
+          transform: `translate(${mousePos.x * 12}px, ${mousePos.y * 8}px)`
         }}
       >
         <div className="absolute top-[-10%] left-[25%] w-[80px] h-[120%] bg-gradient-to-b from-purple-500/5 via-transparent to-transparent transform rotate-[-20deg] blur-lg animate-beam-glow" />
         <div className="absolute top-[-10%] right-[30%] w-[120%] h-[120%] bg-gradient-to-b from-teal-500/5 via-transparent to-transparent transform rotate-[-20deg] blur-lg animate-beam-glow" style={{ animationDelay: '-5s' }} />
       </div>
 
-      {/* 3. Floating Medical Particles & Tiny Stars */}
+      {/* 3. Floating Medical Particles & Stars */}
       <div 
         className="absolute inset-0 z-0 pointer-events-none transition-transform duration-1000 ease-out"
         style={{
-          transform: `translate(${mousePos.x * 35}px, ${mousePos.y * 30}px)`
+          transform: `translate(${mousePos.x * 30}px, ${mousePos.y * 25}px)`
         }}
       >
         {particles.map(p => (
@@ -173,11 +172,11 @@ const LandingPage = () => {
         ))}
       </div>
 
-      {/* 4. Smooth Animated SVG Wave Mesh */}
+      {/* 4. Animated SVG Wave Mesh (Counter Parallax) */}
       <div 
-        className="absolute inset-x-0 bottom-0 h-[48%] z-0 pointer-events-none overflow-hidden opacity-[0.25] transition-transform duration-700 ease-out select-none"
+        className="absolute inset-x-0 bottom-0 h-[48%] z-0 pointer-events-none overflow-hidden opacity-[0.22] transition-transform duration-700 ease-out select-none"
         style={{
-          transform: `translate(${mousePos.x * -15}px, ${mousePos.y * -8}px)`
+          transform: `translate(${mousePos.x * -12}px, ${mousePos.y * -6}px)`
         }}
       >
         <svg className="absolute w-full h-full bottom-0 left-0" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -206,8 +205,10 @@ const LandingPage = () => {
         </svg>
       </div>
 
-      {/* Grid Mesh Background lines */}
+      {/* Grid Mesh Lines */}
       <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
+
+      {/* ========================================================================= */}
 
       {/* Navigation Header */}
       <header className="px-8 py-5 flex items-center justify-between border-b border-white/5 backdrop-blur-md bg-slate-950/10 z-10">
@@ -226,14 +227,14 @@ const LandingPage = () => {
         {/* Soft Radial Glow behind Main Heading */}
         <div className="absolute w-[580px] h-[340px] rounded-full bg-gradient-to-tr from-purple-500/5 to-cyan-500/5 blur-[100px] pointer-events-none z-0 top-[20%] left-1/2 -translate-x-1/2" />
 
-        {/* Hero Title */}
+        {/* Hero Title (SaaS Metallic Gradient) */}
         <motion.h1 
           initial={{ opacity: 0, y: 35 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 leading-tight relative z-10"
         >
-          Empowering Care, <br />
+          <span className="text-premium-metallic">Empowering Care,</span> <br />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-cyan-400">
             Nurturing Elder Lives
           </span>
@@ -347,7 +348,7 @@ const LandingPage = () => {
             {/* Floating particles inside the card */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.15]">
               <div className="bg-particle text-emerald-500/20 font-bold" style={{ left: '15%', top: '25%', '--duration': '7s', '--delay': '0s' }}>•</div>
-              <div className="bg-particle text-emerald-455/25 font-bold" style={{ left: '80%', top: '45%', '--duration': '9s', '--delay': '-2.5s' }}>•</div>
+              <div className="bg-particle text-emerald-400/25 font-bold" style={{ left: '80%', top: '45%', '--duration': '9s', '--delay': '-2.5s' }}>•</div>
               <div className="bg-particle text-emerald-500/20 font-bold" style={{ left: '35%', top: '75%', '--duration': '8s', '--delay': '-5s' }}>•</div>
             </div>
 

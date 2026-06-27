@@ -12,6 +12,13 @@
   }
 }
 
+/* Metallic SaaS Heading Typography */
+.text-premium-metallic {
+  background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.5) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* Glassmorphism Card Styling */
 .glass-card-premium {
   background: rgba(15, 23, 42, 0.45);
@@ -163,18 +170,32 @@
   animation: borderRotate 3s linear infinite;
 }
 
-/* Background light reflection motion */
-@keyframes lightMove {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
+/* Aurora Flowing Background Layers */
+@keyframes auroraMove {
+  0% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform: translate(0, 0) rotate(0deg) scale(1);
   }
-  50% {
-    transform: translate(6vw, 4vh) scale(1.08);
+  33% {
+    border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
+    transform: translate(5vw, 6vh) rotate(120deg) scale(1.15);
+  }
+  66% {
+    border-radius: 50% 50% 30% 70% / 50% 60% 30% 60%;
+    transform: translate(-3vw, -4vh) rotate(240deg) scale(0.9);
+  }
+  100% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform: translate(0, 0) rotate(360deg) scale(1);
   }
 }
 
-.animate-light-move {
-  animation: lightMove 25s ease-in-out infinite;
+.animate-aurora-1 {
+  animation: auroraMove 30s ease-in-out infinite;
+}
+
+.animate-aurora-2 {
+  animation: auroraMove 24s ease-in-out infinite alternate;
 }
 
 /* Animated Light Beams */
@@ -193,32 +214,7 @@
   animation: beamGlow 12s ease-in-out infinite;
 }
 
-/* Pulse animation for SOS alert button */
-@keyframes pulse-sos {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
-  }
-}
-
-.animate-pulse-sos {
-  animation: pulse-sos 2s infinite;
-}
-
-/* Hide scrollbar utility */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Neon Glow Premium Shadows (Updated for Blue Admin, Emerald Helper, Purple Elder) */
+/* Neon Glow Premium Shadows */
 .premium-glow-blue {
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), inset 0 0 10px rgba(59, 130, 246, 0.2);
 }
@@ -258,4 +254,3 @@
   animation: rippleEffect 0.6s cubic-bezier(0.1, 0.8, 0.3, 1);
   z-index: 5;
 }
-
