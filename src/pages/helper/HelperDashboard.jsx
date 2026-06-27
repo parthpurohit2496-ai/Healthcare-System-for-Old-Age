@@ -258,11 +258,8 @@ const HelperDashboard = () => {
               <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'patient')}
                 onMouseLeave={() => handleCardMouseLeave('patient')}
-                style={{
-                  ...tiltStyles.patient,
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
-                }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden"
+                style={tiltStyles.patient}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm premium-card-shadow hover:bg-white/85 mouse-glow-container overflow-hidden"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -321,11 +318,8 @@ const HelperDashboard = () => {
               <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'vitals')}
                 onMouseLeave={() => handleCardMouseLeave('vitals')}
-                style={{
-                  ...tiltStyles.vitals,
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
-                }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden"
+                style={tiltStyles.vitals}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm premium-card-shadow hover:bg-white/85 mouse-glow-container overflow-hidden"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -418,11 +412,8 @@ const HelperDashboard = () => {
               <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'checklist')}
                 onMouseLeave={() => handleCardMouseLeave('checklist')}
-                style={{
-                  ...tiltStyles.checklist,
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
-                }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
+                style={tiltStyles.checklist}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm premium-card-shadow hover:bg-white/85 mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -507,11 +498,8 @@ const HelperDashboard = () => {
               <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'medicine')}
                 onMouseLeave={() => handleCardMouseLeave('medicine')}
-                style={{
-                  ...tiltStyles.medicine,
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
-                }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden min-h-[460px]"
+                style={tiltStyles.medicine}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm premium-card-shadow hover:bg-white/85 mouse-glow-container overflow-hidden min-h-[460px]"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
