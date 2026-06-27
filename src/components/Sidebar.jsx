@@ -42,7 +42,7 @@ const Sidebar = () => {
 
   const getSidebarClasses = () => {
     if (activeUser.role === 'Helper') {
-      return "w-64 bg-white/50 backdrop-blur-xl border-r border-emerald-100/40 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[5px_0_25px_rgba(22,163,74,0.02)] select-none rounded-r-[24px] relative z-20";
+      return "w-64 bg-white border-r border-emerald-100/50 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[4px_0_24px_rgba(0,0,0,0.03)] select-none rounded-r-[24px] relative z-20";
     }
     return "w-64 bg-white border-r border-slate-200 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-sm select-none";
   };
