@@ -302,7 +302,7 @@ const HelperDashboard = () => {
                   ...tiltStyles.patient,
                   boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
                 }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden"
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/12 mouse-glow-container overflow-hidden"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -366,7 +366,7 @@ const HelperDashboard = () => {
                   ...tiltStyles.vitals,
                   boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
                 }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden"
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/12 mouse-glow-container overflow-hidden"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -463,7 +463,7 @@ const HelperDashboard = () => {
                   ...tiltStyles.checklist,
                   boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
                 }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/12 mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -567,7 +567,7 @@ const HelperDashboard = () => {
                   ...tiltStyles.medicine,
                   boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
                 }}
-                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden min-h-[460px]"
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/12 mouse-glow-container overflow-hidden min-h-[460px]"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
