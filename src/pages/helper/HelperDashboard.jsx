@@ -2,9 +2,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { 
   CheckSquare, Activity, Pill, LogIn, LogOut, Plus, AlertCircle, 
-  Heart, Sun, Clock, Check, Bell, Award, Sparkles
+  Heart, Sun, Clock, Check, Award
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const HelperDashboard = () => {
   const { 
@@ -21,14 +21,8 @@ const HelperDashboard = () => {
   const [customTask, setCustomTask] = useState('');
   const [taskTime, setTaskTime] = useState('09:00 AM');
   
-  // Parallax background mouse position
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  
-  // Sparkle overlay state for completed tasks
-  const [activeSparkleId, setActiveSparkleId] = useState(null);
-
-  // Card cursor glow style
-  const [cardGlows, setCardGlows] = useState({
+  // Card hover 3D tilt coordinates
+  const [tiltStyles, setTiltStyles] = useState({
     patient: {},
     checklist: {},
     medicine: {},
@@ -43,18 +37,6 @@ const HelperDashboard = () => {
       setTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
     }, 60000);
     return () => clearInterval(timer);
-  }, []);
-
-  // Global mouse move for background parallax
-  useEffect(() => {
-    const handleBgMouseMove = (e) => {
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
-      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
-      setMousePos({ x, y });
-    };
-    window.addEventListener('mousemove', handleBgMouseMove);
-    return () => window.removeEventListener('mousemove', handleBgMouseMove);
   }, []);
 
   if (!activeUser) return null;
@@ -75,32 +57,37 @@ const HelperDashboard = () => {
   const totalTasksCount = patientTasks.length;
   const completionPercentage = totalTasksCount > 0 ? Math.round((completedTasksCount / totalTasksCount) * 100) : 0;
 
-  // Mouse coordinate tracker inside cards
+  // Card Mouse Move Handler (Mouse Tilt & Follow Glow)
   const handleCardMouseMove = (e, cardKey) => {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    // Relative movement for 3D tilt
+    // Relative position: range [-1, 1]
     const xc = rect.width / 2;
     const yc = rect.height / 2;
     const dx = (x - xc) / xc;
     const dy = (y - yc) / yc;
 
-    setCardGlows(prev => ({
+    // Tilt degrees (max 6deg)
+    const tiltX = -dy * 6;
+    const tiltY = dx * 6;
+
+    setTiltStyles(prev => ({
       ...prev,
       [cardKey]: {
         '--mouse-x': `${x}px`,
         '--mouse-y': `${y}px`,
-        transform: `perspective(800px) rotateX(${-dy * 4}deg) rotateY(${dx * 4}deg) translateY(-4px)`,
-        transition: 'transform 0.08s ease-out'
+        transform: `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-8px)`,
+        transition: 'transform 0.05s ease-out'
       }
     }));
   };
 
+  // Card Mouse Leave (Reset Tilt)
   const handleCardMouseLeave = (cardKey) => {
-    setCardGlows(prev => ({
+    setTiltStyles(prev => ({
       ...prev,
       [cardKey]: {
         transform: 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)',
@@ -131,60 +118,30 @@ const HelperDashboard = () => {
     setTaskTime('09:00 AM');
   };
 
-  const handleTaskToggleClick = (taskId, isCurrentlyCompleted) => {
-    toggleTask(taskId);
-    if (!isCurrentlyCompleted) {
-      // Trigger temporary floating sparkle
-      setActiveSparkleId(taskId);
-      setTimeout(() => setActiveSparkleId(null), 1000);
-    }
-  };
-
-  // Generate 8 decorative botanical leaf coordinates for background
-  const botanicalLeaves = Array.from({ length: 8 }, (_, i) => ({
-    id: i,
-    left: `${(i * 12) + 6}%`,
-    top: `${(i % 2 === 0 ? 15 : 75) + (i % 3) * 5}%`,
-    delay: `${-(i * 2.5)}s`,
-    duration: `${25 + (i % 3) * 6}s`,
-    size: `${25 + (i % 3) * 10}px`,
-    rotate: (i * 45) % 360
-  }));
-
   return (
     <div className="relative min-h-[85vh] text-slate-800 pb-12 select-none">
       
-      {/* ================= NATURE-INSPIRED BACKDROP LAYER ================= */}
+      {/* ================= STATIC CALMING SAGE BACKGROUND ================= */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-3xl">
-        {/* Soft Radial Gradients */}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#F4F9F5] via-[#FCFDFD] to-[#F3F8F4] z-0" />
+        {/* Solid contrasting calming Sage green background to make cards float */}
+        <div className="absolute inset-0 bg-[#DEE5DF] z-0" />
         
-        {/* Sage/Mint glowing blobs (Parallax Layer 1) */}
+        {/* Soft static white-glow accent behind cards */}
+        <div className="absolute top-[20%] left-[10%] w-[600px] h-[600px] rounded-full bg-white/20 blur-[120px]" />
+        
+        {/* Static Flower illustration in background for elegant look */}
         <div 
-          className="absolute inset-0 z-0 transition-transform duration-700 ease-out opacity-45"
-          style={{ transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 15}px)` }}
-        >
-          <div className="absolute top-[10%] left-[20%] w-[350px] h-[350px] rounded-full bg-[#DDF7E3]/40 blur-[80px] animate-light-move" />
-          <div className="absolute bottom-[20%] right-[15%] w-[400px] h-[400px] rounded-full bg-[#A7C7A3]/10 blur-[100px] animate-light-move" style={{ animationDelay: '-6s' }} />
-        </div>
-
-        {/* Real Generated Flower Graphic Layer (Parallax Layer 3: slow counter movement) */}
-        <div 
-          className="absolute right-[-8%] top-[8%] w-[420px] h-[420px] opacity-[0.06] pointer-events-none transition-transform duration-1000 ease-out select-none mix-blend-multiply"
+          className="absolute right-[-6%] top-[8%] w-[420px] h-[420px] opacity-[0.06] pointer-events-none select-none mix-blend-multiply"
           style={{
-            transform: `translate(${mousePos.x * -18}px, ${mousePos.y * -12}px) rotate(${mousePos.x * 4}deg)`,
             backgroundImage: "url('/bg_flower.png')",
             backgroundSize: 'contain',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
           }}
         />
-        
-        {/* Left Side Flower Graphic Layer */}
         <div 
-          className="absolute left-[-6%] bottom-[12%] w-[340px] h-[340px] opacity-[0.05] pointer-events-none transition-transform duration-1000 ease-out select-none mix-blend-multiply"
+          className="absolute left-[-5%] bottom-[12%] w-[340px] h-[340px] opacity-[0.05] pointer-events-none select-none mix-blend-multiply"
           style={{
-            transform: `translate(${mousePos.x * -12}px, ${mousePos.y * -8}px) rotate(${mousePos.y * -4}deg)`,
             backgroundImage: "url('/bg_flower.png')",
             backgroundSize: 'contain',
             backgroundPosition: 'center',
@@ -192,38 +149,10 @@ const HelperDashboard = () => {
           }}
         />
 
-        {/* Slowly floating botanical leaves (Parallax Layer 2) */}
-        <div 
-          className="absolute inset-0 z-0 transition-transform duration-1000 ease-out opacity-25"
-          style={{ transform: `translate(${mousePos.x * -15}px, ${mousePos.y * -10}px)` }}
-        >
-          {botanicalLeaves.map(leaf => (
-            <div 
-              key={leaf.id}
-              className="bg-particle text-emerald-800/10"
-              style={{
-                left: leaf.left,
-                top: leaf.top,
-                width: leaf.size,
-                height: leaf.size,
-                transform: `rotate(${leaf.rotate}deg)`,
-                '--delay': leaf.delay,
-                '--duration': leaf.duration,
-                '--max-opacity': 0.15
-              }}
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17,8C8,10 5.9,16.17 3.82,21.34L2.18,20.66C4.26,15.49 6.34,9 15.67,7C12.5,5 9,5 5,7L4,5C9,3 13,3 17,5C20,3.7 22.3,4.3 22.3,4.3C22.3,4.3 21.7,7 17,8Z" />
-              </svg>
-            </div>
-          ))}
-        </div>
-
-        {/* Water Ripple outline SVGs at the bottom */}
-        <div className="absolute bottom-[-50px] inset-x-0 h-[250px] opacity-[0.06] text-emerald-700">
-          <svg className="w-full h-full" viewBox="0 0 1440 250" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="currentColor" d="M0,160 L48,154.7 C96,149 192,139 288,144 C384,149 480,171 576,176 C672,181 768,171 864,154.7 C960,139 1056,117 1152,112 C1248,107 1344,117 1392,122.7 L1440,128 L1440,250 L1392,250 C1344,250 1248,250 1152,250 C1056,250 960,250 864,250 C768,250 672,250 576,250 C480,250 384,250 288,250 C192,250 96,250 48,250 L0,250 Z" className="animate-wave-slow" />
-            <path fill="currentColor" d="M0,80 L48,96 C96,112 192,144 288,149.3 C384,155 480,133 576,128 C672,123 768,133 864,128 C960,123 1056,101 1152,90.7 C1248,80 1344,80 1392,80 L1440,80 L1440,250 L1392,250 C1344,250 1248,250 1152,250 C1056,250 960,250 864,250 C768,250 672,250 576,250 C480,250 384,250 288,250 C192,250 96,250 48,250 L0,250 Z" className="animate-wave-medium" style={{ opacity: 0.7 }} />
+        {/* Static vector wave outline at the bottom (opacity increased slightly) */}
+        <div className="absolute bottom-0 inset-x-0 h-[220px] opacity-[0.06] text-emerald-800">
+          <svg className="w-full h-full" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M0,160 L48,154.7 C96,149 192,139 288,144 C384,149 480,171 576,176 C672,181 768,171 864,154.7 C960,139 1056,117 1152,112 C1248,107 1344,117 1392,122.7 L1440,128 L1440,250 L1392,250 C1344,250 1248,250 1152,250 C1056,250 960,250 864,250 C768,250 672,250 576,250 C480,250 384,250 288,250 C192,250 96,250 48,250 L0,250 Z" />
           </svg>
         </div>
       </div>
@@ -235,10 +164,10 @@ const HelperDashboard = () => {
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative overflow-hidden rounded-3xl bg-white/70 backdrop-blur-md border border-emerald-100/50 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-[0_8px_32px_rgba(22,163,74,0.02)]"
+          transition={{ duration: 0.8 }}
+          className="relative overflow-hidden rounded-3xl bg-white/80 backdrop-blur-md border border-emerald-100/40 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-[0_15px_30px_rgba(0,0,0,0.03)]"
         >
-          {/* Subtle Lotus line graphic inside header */}
+          {/* Subtle Lotus line decoration */}
           <div className="absolute right-[-40px] top-[-30px] opacity-[0.04] text-emerald-800 pointer-events-none rotate-12">
             <svg width="180" height="180" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12,2C12,2 6,8 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8 12,2 12,2Z" />
@@ -261,14 +190,14 @@ const HelperDashboard = () => {
           {/* Widgets and Check-In panel */}
           <div className="flex flex-wrap items-center gap-4">
             
-            {/* Clock & Sun Widget */}
-            <div className="hidden sm:flex items-center gap-3 px-3 py-2 rounded-2xl bg-white/50 border border-slate-100 text-xs font-semibold text-slate-600 shadow-sm">
+            {/* Clock Widget */}
+            <div className="flex items-center gap-3 px-3 py-2 rounded-2xl bg-white/50 border border-slate-100 text-xs font-semibold text-slate-650 shadow-sm">
               <div className="flex items-center gap-1 text-emerald-600">
-                <Sun size={14} className="animate-spin" style={{ animationDuration: '40s' }} />
+                <Sun size={14} />
                 <span>24°C Calm</span>
               </div>
               <div className="w-[1px] h-3 bg-slate-200" />
-              <div className="flex items-center gap-1.5 text-slate-650">
+              <div className="flex items-center gap-1.5">
                 <Clock size={13} />
                 <span>{time}</span>
               </div>
@@ -277,12 +206,12 @@ const HelperDashboard = () => {
             {/* Check In / Out Buttons */}
             <div className="flex items-center gap-2">
               {isCheckedOut ? (
-                <div className="text-xs px-3.5 py-2 rounded-2xl bg-slate-100 text-slate-500 font-extrabold border border-slate-200">
+                <div className="text-xs px-3.5 py-2 rounded-2xl bg-slate-100 text-slate-555 font-extrabold border border-slate-200">
                   Shift Closed ({todayAttendance.checkOut})
                 </div>
               ) : isCheckedIn ? (
                 <div className="flex items-center gap-2.5">
-                  <span className="text-[10px] uppercase font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 mr-1 animate-pulse shadow-sm shadow-emerald-500/10">
+                  <span className="text-[10px] uppercase font-black text-emerald-750 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 mr-1 shadow-sm">
                     ● Active Shift
                   </span>
                   <button 
@@ -296,7 +225,7 @@ const HelperDashboard = () => {
               ) : (
                 <button 
                   onClick={() => checkInHelper(activeUser.id)}
-                  className="flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-xs font-extrabold rounded-2xl transition-all duration-300 shadow-md shadow-emerald-500/10 scale-100 hover:scale-102"
+                  className="flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-xs font-extrabold rounded-2xl transition-all duration-300 shadow-md shadow-emerald-500/10"
                 >
                   <LogIn size={13} />
                   <span>Start Duty Shift</span>
@@ -311,8 +240,7 @@ const HelperDashboard = () => {
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="bg-white/70 backdrop-blur-md border border-emerald-100/50 rounded-[24px] p-10 text-center shadow-lg shadow-emerald-500/2"
+            className="bg-white/80 backdrop-blur-md border border-emerald-100/40 rounded-[24px] p-10 text-center shadow-xl shadow-emerald-900/5"
           >
             <AlertCircle size={44} className="text-amber-500 mx-auto mb-3.5" />
             <h3 className="text-xl font-bold text-slate-800">No Patient Linked</h3>
@@ -327,23 +255,25 @@ const HelperDashboard = () => {
             <div className="space-y-8 lg:col-span-1">
               
               {/* Patient Info Card */}
-              <motion.div 
+              <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'patient')}
                 onMouseLeave={() => handleCardMouseLeave('patient')}
-                style={cardGlows.patient}
-                className="group border-glow-wrapper relative rounded-[24px] p-6 glass-card-calm hover:bg-white/80 shadow-[0_8px_30px_rgba(22,163,74,0.02)] mouse-glow-container overflow-hidden"
+                style={{
+                  ...tiltStyles.patient,
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                }}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
 
                 <div className="relative z-10 flex items-center justify-between border-b border-emerald-100/30 pb-4 mb-4">
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Assigned Patient</h3>
-                  {/* Glowing Pulse Heart */}
-                  <Heart className="text-emerald-500 fill-emerald-500 animate-pulse" size={14} />
+                  <Heart className="text-emerald-500 fill-emerald-500" size={14} />
                 </div>
 
                 <div className="relative z-10 flex items-center gap-4">
-                  {/* Patient Initials Circle Avatar with Care Progress Ring */}
+                  {/* Patient initials Avatar with Care Progress Ring */}
                   <div className="relative w-16 h-16 flex items-center justify-center bg-gradient-to-tr from-emerald-100 to-mint rounded-full border border-emerald-200/50 shadow-sm text-emerald-800 font-black text-lg">
                     {assignedPatient.name.split(' ').map(n=>n[0]).join('')}
                     {/* Completion Ring */}
@@ -357,8 +287,8 @@ const HelperDashboard = () => {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-black text-lg text-slate-800 group-hover:text-emerald-700 transition-colors flex items-center gap-1.5">
-                      <span>{assignedPatient.name}</span>
+                    <h4 className="font-black text-lg text-slate-800 group-hover:text-emerald-700 transition-colors">
+                      {assignedPatient.name}
                     </h4>
                     <div className="flex items-center gap-2 mt-1.5">
                       <span className="text-[9px] font-black uppercase text-amber-800 bg-amber-50 border border-amber-200/50 px-2 py-0.5 rounded-md">
@@ -385,14 +315,17 @@ const HelperDashboard = () => {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Vitals Form Card */}
-              <motion.div 
+              <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'vitals')}
                 onMouseLeave={() => handleCardMouseLeave('vitals')}
-                style={cardGlows.vitals}
-                className="group border-glow-wrapper relative rounded-[24px] p-6 glass-card-calm hover:bg-white/80 shadow-[0_8px_30px_rgba(22,163,74,0.02)] mouse-glow-container overflow-hidden"
+                style={{
+                  ...tiltStyles.vitals,
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                }}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -417,10 +350,10 @@ const HelperDashboard = () => {
                         value={systolic}
                         onChange={(e) => setSystolic(e.target.value)}
                         placeholder="e.g. 120"
-                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/50 border border-slate-200/80 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/60 border border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
                         required
                       />
-                      <label className="absolute left-3 top-[-7px] bg-[#fbfdfd] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                      <label className="absolute left-3 top-[-7px] bg-[#f5f8f6] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
                         BP Systolic
                       </label>
                     </div>
@@ -430,10 +363,10 @@ const HelperDashboard = () => {
                         value={diastolic}
                         onChange={(e) => setDiastolic(e.target.value)}
                         placeholder="e.g. 80"
-                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/50 border border-slate-200/80 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/60 border border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
                         required
                       />
-                      <label className="absolute left-3 top-[-7px] bg-[#fbfdfd] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                      <label className="absolute left-3 top-[-7px] bg-[#f5f8f6] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
                         BP Diastolic
                       </label>
                     </div>
@@ -446,10 +379,10 @@ const HelperDashboard = () => {
                         value={sugar}
                         onChange={(e) => setSugar(e.target.value)}
                         placeholder="e.g. 110"
-                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/50 border border-slate-200/80 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/60 border border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
                         required
                       />
-                      <label className="absolute left-3 top-[-7px] bg-[#fbfdfd] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                      <label className="absolute left-3 top-[-7px] bg-[#f5f8f6] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
                         Sugar (mg/dL)
                       </label>
                     </div>
@@ -459,10 +392,10 @@ const HelperDashboard = () => {
                         value={pulse}
                         onChange={(e) => setPulse(e.target.value)}
                         placeholder="e.g. 72"
-                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/50 border border-slate-200/80 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/60 border border-slate-200 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
                         required
                       />
-                      <label className="absolute left-3 top-[-7px] bg-[#fbfdfd] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                      <label className="absolute left-3 top-[-7px] bg-[#f5f8f6] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
                         Pulse (bpm)
                       </label>
                     </div>
@@ -471,22 +404,25 @@ const HelperDashboard = () => {
                   <button 
                     type="submit"
                     disabled={!isCheckedIn || isCheckedOut}
-                    className="w-full mt-2 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-extrabold text-xs rounded-2xl shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md hover:shadow-emerald-500/10 flex items-center justify-center gap-1.5"
+                    className="w-full mt-2 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-extrabold text-xs rounded-2xl shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
                   >
                     {!isCheckedIn ? 'Check-In to Save Vitals' : 'Save Health Vitals'}
                   </button>
                 </form>
-              </motion.div>
+              </div >
 
             </div>
 
             {/* 2. Middle Column: Daily Task Checklist */}
             <div className="space-y-8 lg:col-span-1">
-              <motion.div 
+              <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'checklist')}
                 onMouseLeave={() => handleCardMouseLeave('checklist')}
-                style={cardGlows.checklist}
-                className="group border-glow-wrapper relative rounded-[24px] p-6 glass-card-calm hover:bg-white/80 shadow-[0_8px_30px_rgba(22,163,74,0.02)] mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
+                style={{
+                  ...tiltStyles.checklist,
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                }}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -497,13 +433,11 @@ const HelperDashboard = () => {
                       <CheckSquare className="text-emerald-600" size={18} />
                       <h3 className="text-sm font-bold text-slate-800">Shift Duty Checklist</h3>
                     </div>
-                    {/* Completion Tracker */}
                     <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
                       {completedTasksCount}/{totalTasksCount} Done ({completionPercentage}%)
                     </span>
                   </div>
 
-                  {/* Checklist Completion Progress Bar */}
                   <div className="w-full h-1.5 bg-slate-100 rounded-full mb-5 overflow-hidden">
                     <div 
                       className="h-full bg-emerald-600 rounded-full transition-all duration-500 ease-out" 
@@ -516,31 +450,16 @@ const HelperDashboard = () => {
                   ) : (
                     <div className="space-y-3 max-h-[220px] overflow-y-auto pr-1 no-scrollbar">
                       {patientTasks.map(task => (
-                        <div key={task.id} className="relative flex items-start gap-3 p-3 rounded-2xl bg-white/40 border border-slate-150/40 hover:bg-emerald-50/20 hover:border-emerald-100/20 transition-all duration-300">
-                          
-                          {/* Sparkle Confetti Animation on Completed */}
-                          <AnimatePresence>
-                            {activeSparkleId === task.id && (
-                              <motion.div 
-                                initial={{ scale: 0.5, opacity: 1 }}
-                                animate={{ scale: 1.5, opacity: 0 }}
-                                exit={{ opacity: 0 }}
-                                className="absolute left-2.5 top-2.5 z-20 text-yellow-500 pointer-events-none"
-                              >
-                                <Sparkles size={16} className="fill-yellow-400 animate-spin" style={{ animationDuration: '3s' }} />
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-
+                        <div key={task.id} className="relative flex items-start gap-3 p-3 rounded-2xl bg-white/50 border border-slate-200/50 hover:bg-emerald-50/20 hover:border-emerald-100/20 transition-all duration-300">
                           <input 
                             type="checkbox" 
                             checked={task.completed}
                             disabled={!isCheckedIn || isCheckedOut}
-                            onChange={() => handleTaskToggleClick(task.id, task.completed)}
-                            className="mt-0.5 w-4 h-4 rounded-full border-slate-350 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                            onChange={() => toggleTask(task.id)}
+                            className="mt-0.5 w-4 h-4 rounded-full border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                           />
                           <div className="leading-tight">
-                            <p className={`text-xs font-bold transition-all duration-300 ${task.completed ? 'line-through text-slate-450 opacity-60' : 'text-slate-800'}`}>
+                            <p className={`text-xs font-bold transition-all duration-300 ${task.completed ? 'line-through text-slate-400 opacity-60' : 'text-slate-850'}`}>
                               {task.task}
                             </p>
                             <span className="text-[9px] text-slate-400 font-bold mt-0.5 block">{task.time}</span>
@@ -560,7 +479,7 @@ const HelperDashboard = () => {
                       onChange={(e) => setCustomTask(e.target.value)}
                       placeholder="Add custom task..."
                       disabled={!isCheckedIn || isCheckedOut}
-                      className="flex-1 px-3 py-2 rounded-xl bg-white/50 border border-slate-200 focus:outline-none focus:border-emerald-500 text-xs font-semibold text-slate-700 disabled:opacity-50 shadow-sm"
+                      className="flex-1 px-3 py-2 rounded-xl bg-white/60 border border-slate-200 focus:outline-none focus:border-emerald-500 text-xs font-semibold text-slate-700 disabled:opacity-50 shadow-sm"
                     />
                     <input 
                       type="text" 
@@ -568,7 +487,7 @@ const HelperDashboard = () => {
                       onChange={(e) => setTaskTime(e.target.value)}
                       placeholder="e.g. 09:00 AM"
                       disabled={!isCheckedIn || isCheckedOut}
-                      className="w-24 px-2 py-2 rounded-xl bg-white/50 border border-slate-200 focus:outline-none focus:border-emerald-500 text-[10px] font-bold text-center text-slate-700 disabled:opacity-50 shadow-sm"
+                      className="w-24 px-2 py-2 rounded-xl bg-white/60 border border-slate-200 focus:outline-none focus:border-emerald-500 text-[10px] font-bold text-center text-slate-700 disabled:opacity-50 shadow-sm"
                     />
                   </div>
                   <button 
@@ -580,16 +499,19 @@ const HelperDashboard = () => {
                     <span>Add Shift Task</span>
                   </button>
                 </form>
-              </motion.div>
+              </div>
             </div>
 
             {/* 3. Right Column: Medicine Reminder Guide */}
             <div className="space-y-8 lg:col-span-1">
-              <motion.div 
+              <div 
                 onMouseMove={(e) => handleCardMouseMove(e, 'medicine')}
                 onMouseLeave={() => handleCardMouseLeave('medicine')}
-                style={cardGlows.medicine}
-                className="group border-glow-wrapper relative rounded-[24px] p-6 glass-card-calm hover:bg-white/80 shadow-[0_8px_30px_rgba(22,163,74,0.02)] mouse-glow-container overflow-hidden min-h-[460px]"
+                style={{
+                  ...tiltStyles.medicine,
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+                }}
+                className="group border-glow-wrapper card-3d relative rounded-[24px] p-6 glass-card-calm hover:bg-white/85 mouse-glow-container overflow-hidden min-h-[460px]"
               >
                 <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
                 <div className="mouse-glow-bg" />
@@ -604,28 +526,23 @@ const HelperDashboard = () => {
                 ) : (
                   <div className="relative z-10 mt-4 space-y-4 max-h-[350px] overflow-y-auto pr-1 no-scrollbar">
                     {patientMedicines.map((med, idx) => {
-                      // Determine timing color classes based on time string
                       const lowerTime = med.time.toLowerCase();
                       const isMorning = lowerTime.includes('am') || lowerTime.includes('morning');
                       const isNight = lowerTime.includes('pm') && (lowerTime.includes('8') || lowerTime.includes('9') || lowerTime.includes('10') || lowerTime.includes('night'));
                       
                       let tagStyles = "bg-teal-50 text-teal-800 border-teal-100";
-                      if (isMorning) tagStyles = "bg-amber-50 text-amber-800 border-amber-200/50";
+                      if (isMorning) tagStyles = "bg-amber-50 text-amber-800 border-amber-250/50";
                       else if (isNight) tagStyles = "bg-indigo-50 text-indigo-800 border-indigo-150/40";
 
                       return (
                         <div key={med.id} className="relative pl-5 group/item">
+                          <div className="absolute left-[3px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm z-10" />
                           
-                          {/* Timeline connector dot */}
-                          <div className="absolute left-[3px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm z-10 group-hover/item:scale-125 transition-transform" />
-                          
-                          {/* Timeline connector line */}
                           {idx < patientMedicines.length - 1 && (
                             <div className="absolute left-[7px] top-1/2 bottom-[-28px] w-[1px] border-l border-dashed border-emerald-250/50" />
                           )}
 
-                          <div className="p-3.5 rounded-2xl bg-white/40 border border-slate-150/50 flex flex-col gap-1 hover:bg-emerald-50/15 hover:border-emerald-100/30 transition-all duration-300 shadow-sm relative overflow-hidden">
-                            {/* Medicine tag */}
+                          <div className="p-3.5 rounded-2xl bg-white/50 border border-slate-200/50 flex flex-col gap-1 hover:bg-emerald-50/15 hover:border-emerald-100/30 transition-all duration-300 shadow-sm relative overflow-hidden">
                             <span className={`text-[9px] uppercase font-black px-2.5 py-0.5 rounded border w-fit ${tagStyles}`}>
                               {med.time}
                             </span>
@@ -640,19 +557,14 @@ const HelperDashboard = () => {
                     })}
                   </div>
                 )}
-              </motion.div>
+              </div>
             </div>
 
           </div>
         )}
 
         {/* ================= BOTTOM MOTIVATION WELLNESS CARD ================= */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-white/80 via-white/40 to-emerald-50/20 backdrop-blur-md border border-emerald-100/40 p-8 md:p-12 text-center shadow-lg shadow-emerald-500/2 max-w-5xl mx-auto flex flex-col items-center justify-center group"
-        >
+        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-white/90 via-white/50 to-emerald-50/30 backdrop-blur-md border border-emerald-100/40 p-8 md:p-12 text-center shadow-[0_20px_45px_rgba(0,0,0,0.04)] max-w-5xl mx-auto flex flex-col items-center justify-center">
           {/* Eucalyptus Branch Left */}
           <div className="absolute left-[-20px] bottom-[-20px] opacity-[0.06] text-emerald-800 rotate-45 pointer-events-none select-none">
             <svg width="220" height="220" viewBox="0 0 24 24" fill="currentColor">
@@ -660,19 +572,14 @@ const HelperDashboard = () => {
             </svg>
           </div>
 
-          {/* Floating water Lotus Outline behind text */}
-          <div className="relative w-28 h-20 mb-4 flex items-center justify-center text-emerald-600/20 group-hover:text-emerald-600/35 transition-colors duration-500">
-            {/* Pulsing Sparkles */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Sparkles size={48} className="text-yellow-400/30 animate-pulse absolute" />
-            </div>
-            <svg width="84" height="84" viewBox="0 0 24 24" fill="currentColor" className="relative z-10 animate-float-pulse">
+          <div className="relative w-28 h-20 mb-4 flex items-center justify-center text-emerald-600/25 pointer-events-none">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="currentColor" className="relative z-10">
               <path d="M12,2C12,2 6,8 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8 12,2 12,2Z" />
             </svg>
           </div>
 
-          <p className="text-sm font-black text-emerald-800 uppercase tracking-widest mb-2 flex items-center gap-1.5">
-            <span>Daily Reflection</span>
+          <p className="text-sm font-black text-emerald-800 uppercase tracking-widest mb-2">
+            Daily Reflection
           </p>
           
           <h3 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight max-w-2xl leading-relaxed">
@@ -683,7 +590,7 @@ const HelperDashboard = () => {
           <p className="text-xs text-slate-400 mt-3 font-semibold">
             Health Care Network | Nurturing Wellness & Calm Caregiving
           </p>
-        </motion.div>
+        </div>
 
       </div>
     </div>
