@@ -244,20 +244,18 @@ const OldPersonDashboard = () => {
             {/* SOS Alert Button */}
             <div>
               {activeSos ? (
-                <div className="px-6 py-3 bg-red-150 border border-red-200 rounded-2xl text-center animate-pulse shadow-sm">
-                  <span className="font-extrabold text-red-700 text-sm flex items-center gap-1.5 justify-center">
-                    <AlertTriangle />
+                <div className="px-6 py-3.5 bg-red-600 border border-red-700 rounded-2xl text-center animate-pulse shadow-md text-white">
+                  <span className="font-extrabold text-sm flex items-center gap-1.5 justify-center">
+                    <AlertTriangle className="fill-white text-red-600 animate-pulse" />
                     SOS TRANSMITTING...
                   </span>
-                  <p className="text-[10px] text-red-600 font-bold mt-1">Medical assistance has been notified.</p>
+                  <p className="text-[10px] text-white/90 font-bold mt-1">Medical assistance has been notified.</p>
                 </div>
               ) : (
                 <button 
                   onClick={handleSosTrigger}
-                  className="flex items-center gap-2 px-7 py-4 bg-gradient-to-r from-red-650 via-red-550 to-rose-600 text-white hover:from-red-600 hover:to-rose-500 font-black text-xs uppercase tracking-widest rounded-2xl shadow-[0_0_20px_rgba(239,68,68,0.35)] hover:shadow-[0_0_30px_rgba(239,68,68,0.55)] hover:scale-105 active:scale-[0.97] transition-all duration-300 relative overflow-hidden group"
+                  className="flex items-center gap-2 px-7 py-4 bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-[0_4px_20px_rgba(220,38,38,0.35)] hover:shadow-[0_6px_25px_rgba(220,38,38,0.5)] hover:scale-105 active:scale-[0.97] transition-all duration-300"
                 >
-                  {/* Mirror shine sweep reflection */}
-                  <div className="animate-shine-sweep" />
                   <AlertTriangle size={15} className="text-white fill-white animate-pulse mr-0.5" />
                   <span>EMERGENCY SOS</span>
                 </button>
