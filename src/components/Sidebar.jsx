@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { 
-  LayoutDashboard, Users, UserPlus, HeartPulse, FileSpreadsheet, 
-  Settings, Pill, Activity, BarChart3, ClipboardList, MessageSquare, Heart
+  LayoutDashboard, Users, UserPlus, FileSpreadsheet, 
+  Settings, Pill, ClipboardList, MessageSquare, Heart, BarChart3
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -22,8 +22,8 @@ const Sidebar = () => {
         };
       case 'Helper':
         return {
-          navActive: 'bg-gradient-to-r from-emerald-500/20 to-emerald-950/30 text-emerald-400 border-l-4 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.1)] font-extrabold',
-          hover: 'hover:bg-slate-900/50 hover:text-emerald-450 hover:translate-x-1 transition-all duration-300 text-slate-450'
+          navActive: 'bg-[#DDF7E3]/55 text-emerald-800 border-l-4 border-emerald-600 shadow-[0_4px_12px_rgba(22,163,74,0.03)] font-black',
+          hover: 'hover:bg-emerald-50/20 hover:text-emerald-700 hover:translate-x-1 transition-all duration-300 text-slate-600'
         };
       case 'Old Person':
         return {
@@ -42,7 +42,7 @@ const Sidebar = () => {
 
   const getSidebarClasses = () => {
     if (activeUser.role === 'Helper') {
-      return "w-64 bg-slate-950/95 backdrop-blur-xl border-r border-emerald-950/35 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[5px_0_30px_rgba(0,0,0,0.25)] select-none rounded-r-[24px] relative z-20 text-slate-350";
+      return "w-64 bg-white/15 backdrop-blur-xl border-r border-emerald-100/20 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[4px_0_24px_rgba(0,0,0,0.02)] select-none rounded-r-[24px] relative z-20 text-slate-700";
     }
     return "w-64 bg-white border-r border-slate-200 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-sm select-none";
   };
@@ -139,7 +139,7 @@ const Sidebar = () => {
               to="/helper/dashboard" 
               className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <LayoutDashboard size={18} className="group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-emerald-500" />
+              <LayoutDashboard size={18} className="group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-emerald-600" />
               <span>Dashboard</span>
             </NavLink>
 
@@ -147,7 +147,7 @@ const Sidebar = () => {
               to="/helper/leaves" 
               className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <ClipboardList size={18} className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 text-emerald-500" />
+              <ClipboardList size={18} className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 text-emerald-600" />
               <span>Leaves & Availability</span>
             </NavLink>
           </div>
@@ -169,26 +169,26 @@ const Sidebar = () => {
       {/* Sidebar bottom decoration/quote card */}
       <div className="px-6 flex flex-col gap-3">
         {activeUser.role === 'Helper' && (
-          <div className="p-3.5 rounded-2xl bg-slate-900/50 border border-emerald-950/40 shadow-md relative overflow-hidden group">
+          <div className="p-3.5 rounded-2xl bg-white/20 border border-emerald-100/20 shadow-sm relative overflow-hidden group">
             {/* Eucalyptus leaf background decoration outline */}
-            <div className="absolute right-[-10px] bottom-[-10px] opacity-10 text-emerald-500 pointer-events-none group-hover:scale-110 transition-transform duration-500">
+            <div className="absolute right-[-10px] bottom-[-10px] opacity-[0.08] text-emerald-800 pointer-events-none group-hover:scale-110 transition-transform duration-500">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17,8C8,10 5.9,16.17 3.82,21.34L2.18,20.66C4.26,15.49 6.34,9 15.67,7C12.5,5 9,5 5,7L4,5C9,3 13,3 17,5C20,3.7 22.3,4.3 22.3,4.3C22.3,4.3 21.7,7 17,8Z" />
               </svg>
             </div>
-            <p className="text-[10px] text-emerald-500/60 font-bold uppercase tracking-wider mb-1">Weekly Focus</p>
-            <p className="text-[11px] text-emerald-450 leading-relaxed font-semibold italic">
+            <p className="text-[10px] text-emerald-800/60 font-bold uppercase tracking-wider mb-1">Weekly Focus</p>
+            <p className="text-[11px] text-emerald-800 leading-relaxed font-semibold italic">
               "Your caring patience makes a healing difference every single day."
             </p>
           </div>
         )}
 
-        <div className="pt-3 border-t border-emerald-950/30 flex flex-col gap-1 text-[11px] text-slate-500">
-          <p className="font-bold flex items-center gap-1 text-slate-300">
-            <Heart size={12} className="text-emerald-500 fill-emerald-500 animate-pulse" />
+        <div className="pt-3 border-t border-slate-200/30 flex flex-col gap-1 text-[11px] text-slate-500">
+          <p className="font-bold flex items-center gap-1 text-slate-700">
+            <Heart size={12} className="text-emerald-600 fill-emerald-550 animate-pulse" />
             <span>Health Care</span>
           </p>
-          <p className="truncate text-slate-400">Caregiver: {activeUser.name}</p>
+          <p className="truncate text-slate-600">Caregiver: {activeUser.name}</p>
         </div>
       </div>
     </aside>
