@@ -146,12 +146,12 @@ const HelperDashboard = () => {
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-3xl">
         {/* Real Generated Beautiful Zen Nature Landscape Background */}
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-[0.25] z-0" 
+          className="absolute inset-0 bg-cover bg-center opacity-[0.85] z-0" 
           style={{ backgroundImage: "url('/bg_nature.png')" }} 
         />
         
         {/* Soft white-mint glaze overlay to maintain high text contrast & legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F5]/85 via-[#FCFDFD]/65 to-[#F3F8F4]/80 z-0" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/15 to-white/25 z-0" />
         
         {/* Sage/Mint glowing blobs */}
         <div className="absolute top-[10%] left-[20%] w-[450px] h-[450px] rounded-full bg-[#DDF7E3]/35 blur-[85px]" />
