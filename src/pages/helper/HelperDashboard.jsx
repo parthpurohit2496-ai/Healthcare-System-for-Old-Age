@@ -1,8 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { 
-  CheckSquare, Activity, ClipboardCheck, Pill, LogIn, LogOut, Plus, AlertCircle 
+  CheckSquare, Activity, Pill, LogIn, LogOut, Plus, AlertCircle, 
+  Heart, Sun, Clock, Check, Bell, Award, Sparkles
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const HelperDashboard = () => {
   const { 
@@ -10,20 +12,54 @@ const HelperDashboard = () => {
     checkInHelper, checkOutHelper, attendance, logVitals 
   } = useContext(AppContext);
 
-  // Vitals State
+  // States
   const [systolic, setSystolic] = useState('');
   const [diastolic, setDiastolic] = useState('');
   const [sugar, setSugar] = useState('');
   const [pulse, setPulse] = useState('');
   const [vitalsMsg, setVitalsMsg] = useState('');
-
-  // Task State
   const [customTask, setCustomTask] = useState('');
   const [taskTime, setTaskTime] = useState('09:00 AM');
+  
+  // Parallax background mouse position
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  
+  // Sparkle overlay state for completed tasks
+  const [activeSparkleId, setActiveSparkleId] = useState(null);
+
+  // Card cursor glow style
+  const [cardGlows, setCardGlows] = useState({
+    patient: {},
+    checklist: {},
+    medicine: {},
+    vitals: {}
+  });
+
+  // Time state for the header widget
+  const [time, setTime] = useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Global mouse move for background parallax
+  useEffect(() => {
+    const handleBgMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+      setMousePos({ x, y });
+    };
+    window.addEventListener('mousemove', handleBgMouseMove);
+    return () => window.removeEventListener('mousemove', handleBgMouseMove);
+  }, []);
 
   if (!activeUser) return null;
 
-  // Find assigned patient
+  // Assignments lookup
   const assignedPatient = patients.find(p => p.helperId === activeUser.id);
   const patientMedicines = assignedPatient ? medicines.filter(m => m.patientId === assignedPatient.id) : [];
   const patientTasks = assignedPatient ? tasks.filter(t => t.patientId === assignedPatient.id) : [];
@@ -34,12 +70,51 @@ const HelperDashboard = () => {
   const isCheckedIn = !!todayAttendance;
   const isCheckedOut = todayAttendance && !!todayAttendance.checkOut;
 
+  // Completion analytics
+  const completedTasksCount = patientTasks.filter(t => t.completed).length;
+  const totalTasksCount = patientTasks.length;
+  const completionPercentage = totalTasksCount > 0 ? Math.round((completedTasksCount / totalTasksCount) * 100) : 0;
+
+  // Mouse coordinate tracker inside cards
+  const handleCardMouseMove = (e, cardKey) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Relative movement for 3D tilt
+    const xc = rect.width / 2;
+    const yc = rect.height / 2;
+    const dx = (x - xc) / xc;
+    const dy = (y - yc) / yc;
+
+    setCardGlows(prev => ({
+      ...prev,
+      [cardKey]: {
+        '--mouse-x': `${x}px`,
+        '--mouse-y': `${y}px`,
+        transform: `perspective(800px) rotateX(${-dy * 4}deg) rotateY(${dx * 4}deg) translateY(-4px)`,
+        transition: 'transform 0.08s ease-out'
+      }
+    }));
+  };
+
+  const handleCardMouseLeave = (cardKey) => {
+    setCardGlows(prev => ({
+      ...prev,
+      [cardKey]: {
+        transform: 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)',
+        transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
+      }
+    }));
+  };
+
   const handleVitalsSave = (e) => {
     e.preventDefault();
     if (!systolic || !diastolic || !sugar || !pulse) return;
 
     logVitals(assignedPatient.id, systolic, diastolic, sugar, pulse);
-    setVitalsMsg('Vitals saved and logged successfully!');
+    setVitalsMsg('Vitals recorded successfully!');
     setSystolic('');
     setDiastolic('');
     setSugar('');
@@ -56,249 +131,537 @@ const HelperDashboard = () => {
     setTaskTime('09:00 AM');
   };
 
+  const handleTaskToggleClick = (taskId, isCurrentlyCompleted) => {
+    toggleTask(taskId);
+    if (!isCurrentlyCompleted) {
+      // Trigger temporary floating sparkle
+      setActiveSparkleId(taskId);
+      setTimeout(() => setActiveSparkleId(null), 1000);
+    }
+  };
+
+  // Generate 8 decorative botanical leaf coordinates for background
+  const botanicalLeaves = Array.from({ length: 8 }, (_, i) => ({
+    id: i,
+    left: `${(i * 12) + 6}%`,
+    top: `${(i % 2 === 0 ? 15 : 75) + (i % 3) * 5}%`,
+    delay: `${-(i * 2.5)}s`,
+    duration: `${25 + (i % 3) * 6}s`,
+    size: `${25 + (i % 3) * 10}px`,
+    rotate: (i * 45) % 360
+  }));
+
   return (
-    <div className="space-y-6">
+    <div className="relative min-h-[85vh] text-slate-800 pb-12 select-none">
       
-      {/* Header and Check-In panel */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <div>
-          <h2 className="text-2xl font-black text-slate-800 tracking-tight">Helper Dashboard</h2>
-          <p className="text-slate-500 text-sm font-semibold">Welcome, {activeUser.name} | Log your shift activities below.</p>
+      {/* ================= NATURE-INSPIRED BACKDROP LAYER ================= */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-3xl">
+        {/* Soft Radial Gradients */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#F4F9F5] via-[#FCFDFD] to-[#F3F8F4] z-0" />
+        
+        {/* Sage/Mint glowing blobs (Parallax Layer 1) */}
+        <div 
+          className="absolute inset-0 z-0 transition-transform duration-700 ease-out opacity-45"
+          style={{ transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 15}px)` }}
+        >
+          <div className="absolute top-[10%] left-[20%] w-[350px] h-[350px] rounded-full bg-[#DDF7E3]/40 blur-[80px] animate-light-move" />
+          <div className="absolute bottom-[20%] right-[15%] w-[400px] h-[400px] rounded-full bg-[#A7C7A3]/10 blur-[100px] animate-light-move" style={{ animationDelay: '-6s' }} />
         </div>
 
-        {/* Check In / Out Buttons */}
-        <div className="flex items-center gap-3">
-          {isCheckedOut ? (
-            <span className="text-xs px-3 py-1.5 rounded-full bg-slate-100 text-slate-550 font-bold border border-slate-200">
-              Shift Ended ({todayAttendance.checkOut})
-            </span>
-          ) : isCheckedIn ? (
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 mr-2">
-                Shift Active ({todayAttendance.checkIn})
-              </span>
-              <button 
-                onClick={() => checkOutHelper(activeUser.id)}
-                className="flex items-center gap-1.5 px-4 py-2 bg-red-650 hover:bg-red-550 text-white text-xs font-bold rounded shadow transition-all"
-              >
-                <LogOut size={14} />
-                <span>Check Out</span>
-              </button>
-            </div>
-          ) : (
-            <button 
-              onClick={() => checkInHelper(activeUser.id)}
-              className="flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded shadow transition-all"
+        {/* Slowly floating botanical leaves (Parallax Layer 2) */}
+        <div 
+          className="absolute inset-0 z-0 transition-transform duration-1000 ease-out opacity-25"
+          style={{ transform: `translate(${mousePos.x * -15}px, ${mousePos.y * -10}px)` }}
+        >
+          {botanicalLeaves.map(leaf => (
+            <div 
+              key={leaf.id}
+              className="bg-particle text-emerald-800/10"
+              style={{
+                left: leaf.left,
+                top: leaf.top,
+                width: leaf.size,
+                height: leaf.size,
+                transform: `rotate(${leaf.rotate}deg)`,
+                '--delay': leaf.delay,
+                '--duration': leaf.duration,
+                '--max-opacity': 0.15
+              }}
             >
-              <LogIn size={14} />
-              <span>Check In Shift</span>
-            </button>
-          )}
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17,8C8,10 5.9,16.17 3.82,21.34L2.18,20.66C4.26,15.49 6.34,9 15.67,7C12.5,5 9,5 5,7L4,5C9,3 13,3 17,5C20,3.7 22.3,4.3 22.3,4.3C22.3,4.3 21.7,7 17,8Z" />
+              </svg>
+            </div>
+          ))}
+        </div>
+
+        {/* Water Ripple outline SVGs at the bottom */}
+        <div className="absolute bottom-[-50px] inset-x-0 h-[250px] opacity-[0.06] text-emerald-700">
+          <svg className="w-full h-full" viewBox="0 0 1440 250" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M0,160 L48,154.7 C96,149 192,139 288,144 C384,149 480,171 576,176 C672,181 768,171 864,154.7 C960,139 1056,117 1152,112 C1248,107 1344,117 1392,122.7 L1440,128 L1440,250 L1392,250 C1344,250 1248,250 1152,250 C1056,250 960,250 864,250 C768,250 672,250 576,250 C480,250 384,250 288,250 C192,250 96,250 48,250 L0,250 Z" className="animate-wave-slow" />
+            <path fill="currentColor" d="M0,80 L48,96 C96,112 192,144 288,149.3 C384,155 480,133 576,128 C672,123 768,133 864,128 C960,123 1056,101 1152,90.7 C1248,80 1344,80 1392,80 L1440,80 L1440,250 L1392,250 C1344,250 1248,250 1152,250 C1056,250 960,250 864,250 C768,250 672,250 576,250 C480,250 384,250 288,250 C192,250 96,250 48,250 L0,250 Z" className="animate-wave-medium" style={{ opacity: 0.7 }} />
+          </svg>
         </div>
       </div>
+      {/* ==================================================================== */}
 
-      {!assignedPatient ? (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-8 text-center text-slate-800">
-          <AlertCircle size={36} className="text-amber-500 mx-auto mb-3" />
-          <h3 className="text-lg font-bold text-slate-800">No Patient Assigned</h3>
-          <p className="text-xs text-slate-600 max-w-md mx-auto mt-1.5 leading-relaxed font-semibold">
-            You currently do not have any Elder Patient assigned to your care schedule. Please ask the Administrator to link a patient to your account.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Left Column: Patient details & Vitals logging */}
-          <div className="space-y-6 lg:col-span-1">
+      <div className="relative z-10 space-y-8 p-1">
+        
+        {/* ================= HEADER HERO SECTION ================= */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="relative overflow-hidden rounded-3xl bg-white/70 backdrop-blur-md border border-emerald-100/50 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-[0_8px_32px_rgba(22,163,74,0.02)]"
+        >
+          {/* Subtle Lotus line graphic inside header */}
+          <div className="absolute right-[-40px] top-[-30px] opacity-[0.04] text-emerald-800 pointer-events-none rotate-12">
+            <svg width="180" height="180" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12,2C12,2 6,8 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8 12,2 12,2Z" />
+            </svg>
+          </div>
+
+          <div className="space-y-1.5 max-w-xl">
+            <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs uppercase tracking-widest">
+              <Award size={14} />
+              <span>Dedicated Caregiver Workspace</span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">
+              Welcome back, <span className="text-emerald-700">{activeUser.name.split(' ')[0]}</span> 👋
+            </h2>
+            <p className="text-slate-500 text-xs italic font-medium leading-relaxed">
+              "To care for those who once cared for us is one of the highest honors." — Thank you for your warmth and service today.
+            </p>
+          </div>
+
+          {/* Widgets and Check-In panel */}
+          <div className="flex flex-wrap items-center gap-4">
             
-            {/* Patient Info Card */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2">Assigned Elder</h3>
-              <div className="mt-3">
-                <h4 className="font-extrabold text-lg text-slate-900">{assignedPatient.name}</h4>
-                <div className="grid grid-cols-2 gap-3 mt-3 text-xs font-medium text-slate-600">
-                  <p>Age: <strong className="text-slate-800">{assignedPatient.age} yrs</strong></p>
-                  <p>Blood Group: <strong className="text-slate-800">{assignedPatient.bloodGroup}</strong></p>
-                </div>
-                <div className="mt-3 text-xs">
-                  <p className="text-slate-400 font-bold">Diagnosed Conditions:</p>
-                  <p className="text-slate-700 bg-slate-50 border border-slate-100 p-2.5 rounded-lg mt-1 font-semibold">
-                    {assignedPatient.disease || 'None registered'}
-                  </p>
-                </div>
+            {/* Clock & Sun Widget */}
+            <div className="hidden sm:flex items-center gap-3 px-3 py-2 rounded-2xl bg-white/50 border border-slate-100 text-xs font-semibold text-slate-600 shadow-sm">
+              <div className="flex items-center gap-1 text-emerald-600">
+                <Sun size={14} className="animate-spin" style={{ animationDuration: '40s' }} />
+                <span>24°C Calm</span>
+              </div>
+              <div className="w-[1px] h-3 bg-slate-200" />
+              <div className="flex items-center gap-1.5 text-slate-650">
+                <Clock size={13} />
+                <span>{time}</span>
               </div>
             </div>
 
-            {/* Vitals Logger Form */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-              <h3 className="text-base font-bold text-slate-800 border-b border-slate-100 pb-3 flex items-center gap-2">
-                <Activity className="text-emerald-600" size={18} />
-                <span>Log Patient Vitals</span>
-              </h3>
-
-              {vitalsMsg && (
-                <div className="mt-3 p-2.5 bg-emerald-50 border border-emerald-100 rounded text-center text-xs font-semibold text-emerald-750">
-                  {vitalsMsg}
+            {/* Check In / Out Buttons */}
+            <div className="flex items-center gap-2">
+              {isCheckedOut ? (
+                <div className="text-xs px-3.5 py-2 rounded-2xl bg-slate-100 text-slate-500 font-extrabold border border-slate-200">
+                  Shift Closed ({todayAttendance.checkOut})
                 </div>
-              )}
-
-              <form onSubmit={handleVitalsSave} className="mt-4 flex flex-col gap-3">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">BP Systolic</label>
-                    <input 
-                      type="number" 
-                      value={systolic}
-                      onChange={(e) => setSystolic(e.target.value)}
-                      placeholder="e.g. 120"
-                      className="w-full px-2.5 py-1.5 rounded bg-slate-50 border border-slate-300 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">BP Diastolic</label>
-                    <input 
-                      type="number" 
-                      value={diastolic}
-                      onChange={(e) => setDiastolic(e.target.value)}
-                      placeholder="e.g. 80"
-                      className="w-full px-2.5 py-1.5 rounded bg-slate-50 border border-slate-300 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold"
-                      required
-                    />
-                  </div>
+              ) : isCheckedIn ? (
+                <div className="flex items-center gap-2.5">
+                  <span className="text-[10px] uppercase font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 mr-1 animate-pulse shadow-sm shadow-emerald-500/10">
+                    ● Active Shift
+                  </span>
+                  <button 
+                    onClick={() => checkOutHelper(activeUser.id)}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-650 text-xs font-extrabold rounded-2xl border border-rose-250/30 transition-all duration-300 shadow-sm"
+                  >
+                    <LogOut size={13} />
+                    <span>Check Out</span>
+                  </button>
                 </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Sugar (mg/dL)</label>
-                    <input 
-                      type="number" 
-                      value={sugar}
-                      onChange={(e) => setSugar(e.target.value)}
-                      placeholder="e.g. 110"
-                      className="w-full px-2.5 py-1.5 rounded bg-slate-50 border border-slate-300 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Pulse (bpm)</label>
-                    <input 
-                      type="number" 
-                      value={pulse}
-                      onChange={(e) => setPulse(e.target.value)}
-                      placeholder="e.g. 72"
-                      className="w-full px-2.5 py-1.5 rounded bg-slate-50 border border-slate-300 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold"
-                      required
-                    />
-                  </div>
-                </div>
-
+              ) : (
                 <button 
-                  type="submit"
-                  disabled={!isCheckedIn || isCheckedOut}
-                  className="w-full mt-2 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded shadow transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => checkInHelper(activeUser.id)}
+                  className="flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-xs font-extrabold rounded-2xl transition-all duration-300 shadow-md shadow-emerald-500/10 scale-100 hover:scale-102"
                 >
-                  {!isCheckedIn ? 'Check-in to Save Vitals' : 'Save Health Vitals'}
+                  <LogIn size={13} />
+                  <span>Start Duty Shift</span>
                 </button>
-              </form>
+              )}
             </div>
-
           </div>
+        </motion.div>
 
-          {/* Middle Column: Daily Task Checklist */}
-          <div className="space-y-6 lg:col-span-1">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between min-h-[400px]">
-              <div>
-                <h3 className="text-base font-bold text-slate-800 border-b border-slate-100 pb-3 flex items-center gap-2">
-                  <CheckSquare className="text-emerald-600" size={18} />
-                  <span>Shift Duty Checklist</span>
-                </h3>
+        {/* ================= MAIN ASSIGNMENT VIEW ================= */}
+        {!assignedPatient ? (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white/70 backdrop-blur-md border border-emerald-100/50 rounded-[24px] p-10 text-center shadow-lg shadow-emerald-500/2"
+          >
+            <AlertCircle size={44} className="text-amber-500 mx-auto mb-3.5" />
+            <h3 className="text-xl font-bold text-slate-800">No Patient Linked</h3>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto mt-2 leading-relaxed font-semibold">
+              You do not have a linked patient schedule. Please contact the administrator to bind your account to an Elder Patient.
+            </p>
+          </motion.div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* 1. Left Column: Patient details & Vitals logging */}
+            <div className="space-y-8 lg:col-span-1">
+              
+              {/* Patient Info Card */}
+              <motion.div 
+                onMouseMove={(e) => handleCardMouseMove(e, 'patient')}
+                onMouseLeave={() => handleCardMouseLeave('patient')}
+                style={cardGlows.patient}
+                className="group border-glow-wrapper relative rounded-[24px] p-6 glass-card-premium hover:bg-white/80 shadow-[0_8px_30px_rgba(22,163,74,0.02)] mouse-glow-container overflow-hidden"
+              >
+                <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
+                <div className="mouse-glow-bg" />
 
-                {patientTasks.length === 0 ? (
-                  <p className="text-xs text-slate-400 py-8 text-center font-medium">No tasks scheduled for today.</p>
-                ) : (
-                  <div className="mt-3 space-y-2">
-                    {patientTasks.map(task => (
-                      <div key={task.id} className="flex items-start gap-2.5 p-2 rounded hover:bg-slate-50 transition-colors">
-                        <input 
-                          type="checkbox" 
-                          checked={task.completed}
-                          disabled={!isCheckedIn || isCheckedOut}
-                          onChange={() => toggleTask(task.id)}
-                          className="mt-0.5 rounded text-emerald-600 focus:ring-emerald-500"
-                        />
-                        <div className="leading-tight">
-                          <p className={`text-xs font-bold ${task.completed ? 'line-through text-slate-400' : 'text-slate-850'}`}>
-                            {task.task}
-                          </p>
-                          <span className="text-[9px] text-slate-400 font-bold">{task.time}</span>
-                        </div>
-                      </div>
-                    ))}
+                <div className="relative z-10 flex items-center justify-between border-b border-emerald-100/30 pb-4 mb-4">
+                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Assigned Patient</h3>
+                  {/* Glowing Pulse Heart */}
+                  <Heart className="text-emerald-500 fill-emerald-500 animate-pulse" size={14} />
+                </div>
+
+                <div className="relative z-10 flex items-center gap-4">
+                  {/* Patient Initials Circle Avatar with Care Progress Ring */}
+                  <div className="relative w-16 h-16 flex items-center justify-center bg-gradient-to-tr from-emerald-100 to-mint rounded-full border border-emerald-200/50 shadow-sm text-emerald-800 font-black text-lg">
+                    {assignedPatient.name.split(' ').map(n=>n[0]).join('')}
+                    {/* Completion Ring */}
+                    <svg className="absolute inset-0 w-full h-full -rotate-90">
+                      <circle cx="32" cy="32" r="30" fill="none" stroke="#e2e8f0" strokeWidth="2.5" />
+                      <circle cx="32" cy="32" r="30" fill="none" stroke="#16a34a" strokeWidth="2.5" 
+                              strokeDasharray="188.4" 
+                              strokeDashoffset={188.4 - (188.4 * completionPercentage) / 100} 
+                              strokeLinecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="font-black text-lg text-slate-800 group-hover:text-emerald-700 transition-colors flex items-center gap-1.5">
+                      <span>{assignedPatient.name}</span>
+                    </h4>
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <span className="text-[9px] font-black uppercase text-amber-800 bg-amber-50 border border-amber-200/50 px-2 py-0.5 rounded-md">
+                        Blood: {assignedPatient.bloodGroup}
+                      </span>
+                      <span className="text-[9px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                        {assignedPatient.age} Yrs Old
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative z-10 mt-5 space-y-2">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Primary Conditions</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {assignedPatient.disease ? assignedPatient.disease.split(',').map((cond, idx) => (
+                      <span key={idx} className="text-[10px] font-bold text-emerald-700 bg-emerald-50/50 border border-emerald-100/40 px-2.5 py-1 rounded-full">
+                        {cond.trim()}
+                      </span>
+                    )) : (
+                      <span className="text-[10px] font-bold text-slate-500 bg-slate-50 p-1.5 rounded-lg w-full">
+                        None registered
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Vitals Form Card */}
+              <motion.div 
+                onMouseMove={(e) => handleCardMouseMove(e, 'vitals')}
+                onMouseLeave={() => handleCardMouseLeave('vitals')}
+                style={cardGlows.vitals}
+                className="group border-glow-wrapper relative rounded-[24px] p-6 glass-card-premium hover:bg-white/80 shadow-[0_8px_30px_rgba(22,163,74,0.02)] mouse-glow-container overflow-hidden"
+              >
+                <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
+                <div className="mouse-glow-bg" />
+
+                <div className="relative z-10 flex items-center gap-2 border-b border-emerald-100/30 pb-4 mb-4">
+                  <Activity className="text-emerald-600" size={18} />
+                  <h3 className="text-sm font-bold text-slate-800">Log Health Vitals</h3>
+                </div>
+
+                {vitalsMsg && (
+                  <div className="relative z-10 mb-4 p-3 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-800 shadow-sm animate-scale">
+                    <Check size={14} className="bg-emerald-600 text-white rounded-full p-0.5" />
+                    <span>{vitalsMsg}</span>
                   </div>
                 )}
-              </div>
 
-              {/* Add Custom Task Form */}
-              <form onSubmit={handleAddTask} className="border-t border-slate-100 pt-4 mt-6 flex flex-col gap-3">
-                <div className="flex gap-2">
-                  <input 
-                    type="text" 
-                    value={customTask}
-                    onChange={(e) => setCustomTask(e.target.value)}
-                    placeholder="Add custom shift task..."
-                    disabled={!isCheckedIn || isCheckedOut}
-                    className="flex-1 px-2.5 py-1.5 rounded bg-slate-50 border border-slate-300 focus:outline-none focus:border-emerald-500 text-xs font-semibold text-slate-700 disabled:opacity-50"
-                  />
-                  <input 
-                    type="text" 
-                    value={taskTime}
-                    onChange={(e) => setTaskTime(e.target.value)}
-                    placeholder="e.g. 09:00 AM"
-                    disabled={!isCheckedIn || isCheckedOut}
-                    className="w-20 px-2 py-1.5 rounded bg-slate-50 border border-slate-300 focus:outline-none focus:border-emerald-500 text-[10px] font-bold text-center text-slate-700 disabled:opacity-50"
-                  />
-                </div>
-                <button 
-                  type="submit"
-                  disabled={!isCheckedIn || isCheckedOut}
-                  className="w-full py-1.5 bg-emerald-55 hover:bg-emerald-600 text-white font-bold text-xs rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
-                >
-                  <Plus size={12} />
-                  <span>Add Shift Task</span>
-                </button>
-              </form>
-            </div>
-          </div>
-
-          {/* Right Column: Medicine Reminder Guide */}
-          <div className="space-y-6 lg:col-span-1">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-              <h3 className="text-base font-bold text-slate-800 border-b border-slate-100 pb-3 flex items-center gap-2">
-                <Pill className="text-emerald-600" size={18} />
-                <span>Medicine (Dava) Schedule</span>
-              </h3>
-
-              {patientMedicines.length === 0 ? (
-                <p className="text-xs text-slate-400 py-6 text-center font-medium">No medicine schedule configured.</p>
-              ) : (
-                <div className="mt-3 space-y-3">
-                  {patientMedicines.map(med => (
-                    <div key={med.id} className="p-3 rounded-lg border border-slate-100 bg-slate-50/50 flex flex-col gap-1">
-                      <span className="text-[9px] uppercase font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 w-fit">
-                        {med.company}
-                      </span>
-                      <h4 className="font-bold text-xs text-slate-900 mt-1">{med.name}</h4>
-                      <p className="text-[10px] text-slate-600 mt-0.5 font-bold">Time: {med.time}</p>
+                <form onSubmit={handleVitalsSave} className="relative z-10 space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="relative">
+                      <input 
+                        type="number" 
+                        value={systolic}
+                        onChange={(e) => setSystolic(e.target.value)}
+                        placeholder="e.g. 120"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/50 border border-slate-200/80 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        required
+                      />
+                      <label className="absolute left-3 top-[-7px] bg-[#fbfdfd] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                        BP Systolic
+                      </label>
                     </div>
-                  ))}
-                </div>
-              )}
+                    <div className="relative">
+                      <input 
+                        type="number" 
+                        value={diastolic}
+                        onChange={(e) => setDiastolic(e.target.value)}
+                        placeholder="e.g. 80"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/50 border border-slate-200/80 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        required
+                      />
+                      <label className="absolute left-3 top-[-7px] bg-[#fbfdfd] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                        BP Diastolic
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="relative">
+                      <input 
+                        type="number" 
+                        value={sugar}
+                        onChange={(e) => setSugar(e.target.value)}
+                        placeholder="e.g. 110"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/50 border border-slate-200/80 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        required
+                      />
+                      <label className="absolute left-3 top-[-7px] bg-[#fbfdfd] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                        Sugar (mg/dL)
+                      </label>
+                    </div>
+                    <div className="relative">
+                      <input 
+                        type="number" 
+                        value={pulse}
+                        onChange={(e) => setPulse(e.target.value)}
+                        placeholder="e.g. 72"
+                        className="peer w-full px-3 py-2.5 rounded-xl bg-white/50 border border-slate-200/80 focus:border-emerald-500 focus:outline-none text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                        required
+                      />
+                      <label className="absolute left-3 top-[-7px] bg-[#fbfdfd] px-1 text-[9px] font-black text-slate-400 uppercase tracking-wider transition-all peer-focus:text-emerald-600">
+                        Pulse (bpm)
+                      </label>
+                    </div>
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={!isCheckedIn || isCheckedOut}
+                    className="w-full mt-2 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-extrabold text-xs rounded-2xl shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md hover:shadow-emerald-500/10 flex items-center justify-center gap-1.5"
+                  >
+                    {!isCheckedIn ? 'Check-In to Save Vitals' : 'Save Health Vitals'}
+                  </button>
+                </form>
+              </motion.div>
+
             </div>
+
+            {/* 2. Middle Column: Daily Task Checklist */}
+            <div className="space-y-8 lg:col-span-1">
+              <motion.div 
+                onMouseMove={(e) => handleCardMouseMove(e, 'checklist')}
+                onMouseLeave={() => handleCardMouseLeave('checklist')}
+                style={cardGlows.checklist}
+                className="group border-glow-wrapper relative rounded-[24px] p-6 glass-card-premium hover:bg-white/80 shadow-[0_8px_30px_rgba(22,163,74,0.02)] mouse-glow-container overflow-hidden flex flex-col justify-between min-h-[460px]"
+              >
+                <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
+                <div className="mouse-glow-bg" />
+
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between border-b border-emerald-100/30 pb-4 mb-4">
+                    <div className="flex items-center gap-2">
+                      <CheckSquare className="text-emerald-600" size={18} />
+                      <h3 className="text-sm font-bold text-slate-800">Shift Duty Checklist</h3>
+                    </div>
+                    {/* Completion Tracker */}
+                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+                      {completedTasksCount}/{totalTasksCount} Done ({completionPercentage}%)
+                    </span>
+                  </div>
+
+                  {/* Checklist Completion Progress Bar */}
+                  <div className="w-full h-1.5 bg-slate-100 rounded-full mb-5 overflow-hidden">
+                    <div 
+                      className="h-full bg-emerald-600 rounded-full transition-all duration-500 ease-out" 
+                      style={{ width: `${completionPercentage}%` }} 
+                    />
+                  </div>
+
+                  {patientTasks.length === 0 ? (
+                    <p className="text-xs text-slate-400 py-10 text-center font-medium">No shift tasks configured for today.</p>
+                  ) : (
+                    <div className="space-y-3 max-h-[220px] overflow-y-auto pr-1 no-scrollbar">
+                      {patientTasks.map(task => (
+                        <div key={task.id} className="relative flex items-start gap-3 p-3 rounded-2xl bg-white/40 border border-slate-150/40 hover:bg-emerald-50/20 hover:border-emerald-100/20 transition-all duration-300">
+                          
+                          {/* Sparkle Confetti Animation on Completed */}
+                          <AnimatePresence>
+                            {activeSparkleId === task.id && (
+                              <motion.div 
+                                initial={{ scale: 0.5, opacity: 1 }}
+                                animate={{ scale: 1.5, opacity: 0 }}
+                                exit={{ opacity: 0 }}
+                                className="absolute left-2.5 top-2.5 z-20 text-yellow-500 pointer-events-none"
+                              >
+                                <Sparkles size={16} className="fill-yellow-400 animate-spin" style={{ animationDuration: '3s' }} />
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          <input 
+                            type="checkbox" 
+                            checked={task.completed}
+                            disabled={!isCheckedIn || isCheckedOut}
+                            onChange={() => handleTaskToggleClick(task.id, task.completed)}
+                            className="mt-0.5 w-4 h-4 rounded-full border-slate-350 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                          />
+                          <div className="leading-tight">
+                            <p className={`text-xs font-bold transition-all duration-300 ${task.completed ? 'line-through text-slate-450 opacity-60' : 'text-slate-800'}`}>
+                              {task.task}
+                            </p>
+                            <span className="text-[9px] text-slate-400 font-bold mt-0.5 block">{task.time}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Add Custom Task Form */}
+                <form onSubmit={handleAddTask} className="relative z-10 border-t border-emerald-100/30 pt-4 mt-6 flex flex-col gap-3">
+                  <div className="flex gap-2">
+                    <input 
+                      type="text" 
+                      value={customTask}
+                      onChange={(e) => setCustomTask(e.target.value)}
+                      placeholder="Add custom task..."
+                      disabled={!isCheckedIn || isCheckedOut}
+                      className="flex-1 px-3 py-2 rounded-xl bg-white/50 border border-slate-200 focus:outline-none focus:border-emerald-500 text-xs font-semibold text-slate-700 disabled:opacity-50 shadow-sm"
+                    />
+                    <input 
+                      type="text" 
+                      value={taskTime}
+                      onChange={(e) => setTaskTime(e.target.value)}
+                      placeholder="e.g. 09:00 AM"
+                      disabled={!isCheckedIn || isCheckedOut}
+                      className="w-24 px-2 py-2 rounded-xl bg-white/50 border border-slate-200 focus:outline-none focus:border-emerald-500 text-[10px] font-bold text-center text-slate-700 disabled:opacity-50 shadow-sm"
+                    />
+                  </div>
+                  <button 
+                    type="submit"
+                    disabled={!isCheckedIn || isCheckedOut}
+                    className="w-full py-2.5 bg-[#DDF7E3] hover:bg-emerald-100 text-emerald-800 border border-emerald-250/20 font-extrabold text-xs rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
+                  >
+                    <Plus size={12} />
+                    <span>Add Shift Task</span>
+                  </button>
+                </form>
+              </motion.div>
+            </div>
+
+            {/* 3. Right Column: Medicine Reminder Guide */}
+            <div className="space-y-8 lg:col-span-1">
+              <motion.div 
+                onMouseMove={(e) => handleCardMouseMove(e, 'medicine')}
+                onMouseLeave={() => handleCardMouseLeave('medicine')}
+                style={cardGlows.medicine}
+                className="group border-glow-wrapper relative rounded-[24px] p-6 glass-card-premium hover:bg-white/80 shadow-[0_8px_30px_rgba(22,163,74,0.02)] mouse-glow-container overflow-hidden min-h-[460px]"
+              >
+                <div className="border-glow-element" style={{ '--glow-color': '#10b981' }} />
+                <div className="mouse-glow-bg" />
+
+                <div className="relative z-10 flex items-center gap-2 border-b border-emerald-100/30 pb-4 mb-4">
+                  <Pill className="text-emerald-600" size={18} />
+                  <h3 className="text-sm font-bold text-slate-800">Medicine (Dava) Schedule</h3>
+                </div>
+
+                {patientMedicines.length === 0 ? (
+                  <p className="relative z-10 text-xs text-slate-400 py-12 text-center font-medium">No medicine schedule configured.</p>
+                ) : (
+                  <div className="relative z-10 mt-4 space-y-4 max-h-[350px] overflow-y-auto pr-1 no-scrollbar">
+                    {patientMedicines.map((med, idx) => {
+                      // Determine timing color classes based on time string
+                      const lowerTime = med.time.toLowerCase();
+                      const isMorning = lowerTime.includes('am') || lowerTime.includes('morning');
+                      const isNight = lowerTime.includes('pm') && (lowerTime.includes('8') || lowerTime.includes('9') || lowerTime.includes('10') || lowerTime.includes('night'));
+                      
+                      let tagStyles = "bg-teal-50 text-teal-800 border-teal-100";
+                      if (isMorning) tagStyles = "bg-amber-50 text-amber-800 border-amber-200/50";
+                      else if (isNight) tagStyles = "bg-indigo-50 text-indigo-800 border-indigo-150/40";
+
+                      return (
+                        <div key={med.id} className="relative pl-5 group/item">
+                          
+                          {/* Timeline connector dot */}
+                          <div className="absolute left-[3px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm z-10 group-hover/item:scale-125 transition-transform" />
+                          
+                          {/* Timeline connector line */}
+                          {idx < patientMedicines.length - 1 && (
+                            <div className="absolute left-[7px] top-1/2 bottom-[-28px] w-[1px] border-l border-dashed border-emerald-250/50" />
+                          )}
+
+                          <div className="p-3.5 rounded-2xl bg-white/40 border border-slate-150/50 flex flex-col gap-1 hover:bg-emerald-50/15 hover:border-emerald-100/30 transition-all duration-300 shadow-sm relative overflow-hidden">
+                            {/* Medicine tag */}
+                            <span className={`text-[9px] uppercase font-black px-2.5 py-0.5 rounded border w-fit ${tagStyles}`}>
+                              {med.time}
+                            </span>
+                            <div className="flex items-center justify-between mt-1">
+                              <h4 className="font-extrabold text-xs text-slate-800">{med.name}</h4>
+                              <span className="text-[9px] font-bold text-slate-400 italic">Qty: 1 Tab</span>
+                            </div>
+                            <p className="text-[9px] text-slate-400 font-bold mt-0.5 uppercase tracking-wider">{med.company}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </motion.div>
+            </div>
+
+          </div>
+        )}
+
+        {/* ================= BOTTOM MOTIVATION WELLNESS CARD ================= */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-white/80 via-white/40 to-emerald-50/20 backdrop-blur-md border border-emerald-100/40 p-8 md:p-12 text-center shadow-lg shadow-emerald-500/2 max-w-5xl mx-auto flex flex-col items-center justify-center group"
+        >
+          {/* Eucalyptus Branch Left */}
+          <div className="absolute left-[-20px] bottom-[-20px] opacity-[0.06] text-emerald-800 rotate-45 pointer-events-none select-none">
+            <svg width="220" height="220" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17,8C8,10 5.9,16.17 3.82,21.34L2.18,20.66C4.26,15.49 6.34,9 15.67,7C12.5,5 9,5 5,7L4,5C9,3 13,3 17,5C20,3.7 22.3,4.3 22.3,4.3C22.3,4.3 21.7,7 17,8Z" />
+            </svg>
           </div>
 
-        </div>
-      )}
+          {/* Floating water Lotus Outline behind text */}
+          <div className="relative w-28 h-20 mb-4 flex items-center justify-center text-emerald-600/20 group-hover:text-emerald-600/35 transition-colors duration-500">
+            {/* Pulsing Sparkles */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Sparkles size={48} className="text-yellow-400/30 animate-pulse absolute" />
+            </div>
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="currentColor" className="relative z-10 animate-float-pulse">
+              <path d="M12,2C12,2 6,8 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8 12,2 12,2Z" />
+            </svg>
+          </div>
+
+          <p className="text-sm font-black text-emerald-800 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+            <span>Daily Reflection</span>
+          </p>
+          
+          <h3 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight max-w-2xl leading-relaxed">
+            "You make a difference every day. <br />
+            <span className="text-emerald-700">Every act of kindness heals another life.</span>"
+          </h3>
+          
+          <p className="text-xs text-slate-400 mt-3 font-semibold">
+            Health Care Network | Nurturing Wellness & Calm Caregiving
+          </p>
+        </motion.div>
+
+      </div>
     </div>
   );
 };

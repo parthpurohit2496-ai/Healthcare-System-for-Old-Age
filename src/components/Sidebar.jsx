@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { 
   LayoutDashboard, Users, UserPlus, HeartPulse, FileSpreadsheet, 
-  Settings, Pill, Activity, BarChart3, ClipboardList, MessageSquare, AlertTriangle
+  Settings, Pill, Activity, BarChart3, ClipboardList, MessageSquare, Heart
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -18,32 +18,39 @@ const Sidebar = () => {
       case 'Admin':
         return {
           navActive: 'bg-admin-light text-admin-primary border-r-4 border-admin-accent',
-          hover: 'hover:bg-slate-100'
+          hover: 'hover:bg-slate-100 transition-all duration-200'
         };
       case 'Helper':
         return {
-          navActive: 'bg-helper-light text-helper-primary border-r-4 border-helper-accent',
-          hover: 'hover:bg-slate-100'
+          navActive: 'bg-gradient-to-r from-emerald-500/15 to-emerald-50/5 text-emerald-700 border-l-4 border-emerald-600 shadow-[inset_0_0_12px_rgba(22,163,74,0.02)] font-extrabold',
+          hover: 'hover:bg-emerald-50/40 hover:text-emerald-600 hover:translate-x-1 transition-all duration-300'
         };
       case 'Old Person':
         return {
           navActive: 'bg-patient-light text-patient-primary border-r-4 border-patient-accent',
-          hover: 'hover:bg-slate-100'
+          hover: 'hover:bg-slate-100 transition-all duration-200'
         };
       default:
         return {
           navActive: 'bg-slate-100 text-slate-800',
-          hover: 'hover:bg-slate-50'
+          hover: 'hover:bg-slate-50 transition-all duration-200'
         };
     }
   };
 
   const theme = getSidebarTheme();
 
+  const getSidebarClasses = () => {
+    if (activeUser.role === 'Helper') {
+      return "w-64 bg-white/50 backdrop-blur-xl border-r border-emerald-100/40 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[5px_0_25px_rgba(22,163,74,0.02)] select-none rounded-r-[24px] relative z-20";
+    }
+    return "w-64 bg-white border-r border-slate-200 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-sm select-none";
+  };
+
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-sm select-none">
+    <aside className={getSidebarClasses()}>
       <div className="flex flex-col gap-1.5">
-        <p className="px-6 text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-2">Portal Navigation</p>
+        <p className="px-6 text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-3">Portal Navigation</p>
 
         {activeUser.role === 'Admin' && (
           <>
@@ -127,23 +134,23 @@ const Sidebar = () => {
         )}
 
         {activeUser.role === 'Helper' && (
-          <>
+          <div className="space-y-1">
             <NavLink 
               to="/helper/dashboard" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <LayoutDashboard size={18} />
+              <LayoutDashboard size={18} className="group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300" />
               <span>Dashboard</span>
             </NavLink>
 
             <NavLink 
               to="/helper/leaves" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <ClipboardList size={18} />
+              <ClipboardList size={18} className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300" />
               <span>Leaves & Availability</span>
             </NavLink>
-          </>
+          </div>
         )}
 
         {activeUser.role === 'Old Person' && (
@@ -159,12 +166,30 @@ const Sidebar = () => {
         )}
       </div>
 
-      <div className="px-6 pt-4 border-t border-slate-100 flex flex-col gap-1 text-[11px] text-slate-400">
-        <p className="font-bold flex items-center gap-1 text-slate-700">
-          <HeartPulse size={12} className="text-red-500" />
-          <span>Health Care Network</span>
-        </p>
-        <p>Logged in: {activeUser.name}</p>
+      {/* Sidebar bottom decoration/quote card */}
+      <div className="px-6 flex flex-col gap-3">
+        {activeUser.role === 'Helper' && (
+          <div className="p-3.5 rounded-2xl bg-gradient-to-br from-emerald-50/60 to-mint/20 border border-emerald-100/50 shadow-sm relative overflow-hidden group">
+            {/* Eucalyptus leaf background decoration outline */}
+            <div className="absolute right-[-10px] bottom-[-10px] opacity-15 text-emerald-800 pointer-events-none group-hover:scale-110 transition-transform duration-500">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17,8C8,10 5.9,16.17 3.82,21.34L2.18,20.66C4.26,15.49 6.34,9 15.67,7C12.5,5 9,5 5,7L4,5C9,3 13,3 17,5C20,3.7 22.3,4.3 22.3,4.3C22.3,4.3 21.7,7 17,8Z" />
+              </svg>
+            </div>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Weekly Focus</p>
+            <p className="text-[11px] text-emerald-800 leading-relaxed font-semibold italic">
+              "Your caring patience makes a healing difference every single day."
+            </p>
+          </div>
+        )}
+
+        <div className="pt-3 border-t border-slate-100 flex flex-col gap-1 text-[11px] text-slate-400">
+          <p className="font-bold flex items-center gap-1 text-slate-700">
+            <Heart size={12} className="text-emerald-600 fill-emerald-600 animate-pulse" />
+            <span>Health Care</span>
+          </p>
+          <p className="truncate">Caregiver: {activeUser.name}</p>
+        </div>
       </div>
     </aside>
   );
