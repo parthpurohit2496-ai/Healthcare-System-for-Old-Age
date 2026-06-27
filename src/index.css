@@ -30,10 +30,10 @@
 
 /* Calming Light Glassmorphism Card (for Helper Dashboard) */
 .glass-card-calm {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(22, 163, 74, 0.08);
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(22, 163, 74, 0.22);
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 

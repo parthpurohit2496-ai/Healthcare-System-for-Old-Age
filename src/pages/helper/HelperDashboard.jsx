@@ -191,7 +191,7 @@ const HelperDashboard = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative overflow-hidden rounded-3xl bg-white/80 backdrop-blur-md border border-emerald-100/40 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-[0_15px_30px_rgba(0,0,0,0.03)]"
+          className="relative overflow-hidden rounded-3xl bg-white/25 backdrop-blur-md border border-emerald-100/30 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-[0_15px_30px_rgba(0,0,0,0.03)]"
         >
           {/* Subtle Lotus decoration */}
           <div className="absolute right-[-40px] top-[-30px] opacity-[0.04] text-emerald-800 pointer-events-none rotate-12">
@@ -621,7 +621,7 @@ const HelperDashboard = () => {
         )}
 
         {/* ================= BOTTOM MOTIVATION WELLNESS CARD ================= */}
-        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-white/90 via-white/50 to-emerald-50/30 backdrop-blur-md border border-emerald-100/40 p-8 md:p-12 text-center shadow-[0_20px_45px_rgba(0,0,0,0.04)] max-w-5xl mx-auto flex flex-col items-center justify-center group">
+        <div className="relative overflow-hidden rounded-[32px] bg-white/20 backdrop-blur-md border border-emerald-100/30 p-8 md:p-12 text-center shadow-[0_20px_45px_rgba(0,0,0,0.04)] max-w-5xl mx-auto flex flex-col items-center justify-center group">
           {/* Eucalyptus Branch Left */}
           <div className="absolute left-[-20px] bottom-[-20px] opacity-[0.06] text-emerald-800 rotate-45 pointer-events-none select-none">
             <svg width="220" height="220" viewBox="0 0 24 24" fill="currentColor">
