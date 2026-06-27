@@ -134,24 +134,24 @@ const Sidebar = () => {
         )}
 
         {activeUser.role === 'Helper' && (
-          <div className="space-y-1">
+          <div className="space-y-2">
             <NavLink 
               to="/helper/dashboard" 
-              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 px-6 py-3 text-sm font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-4 mx-3 px-5 py-3.5 rounded-2xl text-base font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
               {/* Mirror shine sweep reflection */}
               <div className="animate-shine-sweep" />
-              <LayoutDashboard size={18} className="group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-emerald-600 relative z-10" />
+              <LayoutDashboard size={20} className="group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-emerald-600 relative z-10" />
               <span className="relative z-10">Dashboard</span>
             </NavLink>
 
             <NavLink 
               to="/helper/leaves" 
-              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 px-6 py-3 text-sm font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-4 mx-3 px-5 py-3.5 rounded-2xl text-base font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
               {/* Mirror shine sweep reflection */}
               <div className="animate-shine-sweep" />
-              <ClipboardList size={18} className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 text-emerald-600 relative z-10" />
+              <ClipboardList size={20} className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 text-emerald-600 relative z-10" />
               <span className="relative z-10">Leaves & Availability</span>
             </NavLink>
           </div>
