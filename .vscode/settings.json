@@ -1,0 +1,17 @@
+{
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/dist": true
+  },
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#0d1b2a",
+    "titleBar.activeForeground": "#e0e1dd",
+    "activityBar.background": "#0f172a",
+    "activityBar.foreground": "#38bdf8",
+    "statusBar.background": "#0d1b2a",
+    "statusBar.foreground": "#e0e1dd"
+  }
+}
