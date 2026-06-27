@@ -66,3 +66,62 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Floating Card Animation */
+@keyframes cardFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-card-float {
+  animation: cardFloat 5s ease-in-out infinite;
+}
+
+/* Mirror Shine Effect */
+.mirror-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.mirror-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+.mirror-shine:hover::after {
+  left: 150%;
+  transition: all 1.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Blinking Logo Animation */
+@keyframes blinkLogo {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1.2) drop-shadow(0 0 12px currentColor);
+  }
+  50% {
+    opacity: 0.4;
+    filter: brightness(0.8) drop-shadow(0 0 2px currentColor);
+  }
+}
+
+.logo-blink-hover:hover {
+  animation: blinkLogo 0.8s infinite ease-in-out;
+}
+

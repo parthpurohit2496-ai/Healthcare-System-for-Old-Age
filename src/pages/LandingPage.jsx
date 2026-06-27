@@ -53,7 +53,8 @@ const LandingPage = () => {
           {/* Admin Card */}
           <div 
             onClick={() => navigate('/admin/login')}
-            className="group cursor-pointer relative rounded-2xl p-8 bg-slate-950/40 border border-purple-500/20 backdrop-blur-md hover:border-purple-500/50 hover:bg-slate-950/60 transition-all duration-500 flex flex-col items-center hover:-translate-y-2 shadow-[0_10px_35px_-15px_rgba(168,85,247,0.15)] hover:shadow-[0_20px_40px_-10px_rgba(168,85,247,0.3)] overflow-hidden"
+            className="group cursor-pointer relative rounded-2xl p-8 bg-slate-950/40 border border-purple-500/20 backdrop-blur-md hover:border-purple-500/50 hover:bg-slate-950/60 transition-all duration-500 flex flex-col items-center hover:-translate-y-2 shadow-[0_10px_35px_-15px_rgba(168,85,247,0.15)] hover:shadow-[0_20px_40px_-10px_rgba(168,85,247,0.3)] overflow-hidden animate-card-float mirror-shine"
+            style={{ animationDelay: '0s' }}
           >
             {/* Glowing bottom strip */}
             <div className="absolute bottom-0 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-30 group-hover:opacity-100 transition-opacity blur-[1px]" />
@@ -63,7 +64,7 @@ const LandingPage = () => {
               {/* Orbit Ring */}
               <div className="absolute w-[120%] h-[30%] border border-purple-500/30 rounded-full transform rotate-[-25deg] shadow-[0_0_8px_rgba(168,85,247,0.1)] group-hover:border-purple-500/60 transition-all duration-500" />
               {/* Core Icon */}
-              <div className="w-14 h-14 rounded-full bg-purple-950/60 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:text-purple-350 group-hover:scale-110 transition-all duration-500 relative z-10 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+              <div className="w-14 h-14 rounded-full bg-purple-950/60 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:text-purple-355 group-hover:scale-110 transition-all duration-500 relative z-10 shadow-[0_0_15px_rgba(168,85,247,0.2)] logo-blink-hover">
                 <ShieldCheck size={24} />
               </div>
             </div>
@@ -80,7 +81,8 @@ const LandingPage = () => {
           {/* Helper Card */}
           <div 
             onClick={() => navigate('/helper/login')}
-            className="group cursor-pointer relative rounded-2xl p-8 bg-slate-950/40 border border-teal-500/20 backdrop-blur-md hover:border-teal-500/50 hover:bg-slate-950/60 transition-all duration-500 flex flex-col items-center hover:-translate-y-2 shadow-[0_10px_35px_-15px_rgba(20,184,166,0.15)] hover:shadow-[0_20px_40px_-10px_rgba(20,184,166,0.3)] overflow-hidden"
+            className="group cursor-pointer relative rounded-2xl p-8 bg-slate-950/40 border border-teal-500/20 backdrop-blur-md hover:border-teal-500/50 hover:bg-slate-950/60 transition-all duration-500 flex flex-col items-center hover:-translate-y-2 shadow-[0_10px_35px_-15px_rgba(20,184,166,0.15)] hover:shadow-[0_20px_40px_-10px_rgba(20,184,166,0.3)] overflow-hidden animate-card-float mirror-shine"
+            style={{ animationDelay: '0.2s' }}
           >
             {/* Glowing bottom strip */}
             <div className="absolute bottom-0 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-transparent via-teal-500 to-transparent opacity-30 group-hover:opacity-100 transition-opacity blur-[1px]" />
@@ -90,7 +92,7 @@ const LandingPage = () => {
               {/* Orbit Ring */}
               <div className="absolute w-[120%] h-[30%] border border-teal-500/30 rounded-full transform rotate-[-25deg] shadow-[0_0_8px_rgba(20,184,166,0.1)] group-hover:border-teal-500/60 transition-all duration-500" />
               {/* Core Icon */}
-              <div className="w-14 h-14 rounded-full bg-teal-950/60 border border-teal-500/30 flex items-center justify-center text-teal-400 group-hover:text-teal-350 group-hover:scale-110 transition-all duration-500 relative z-10 shadow-[0_0_15px_rgba(20,184,166,0.2)]">
+              <div className="w-14 h-14 rounded-full bg-teal-950/60 border border-teal-500/30 flex items-center justify-center text-teal-400 group-hover:text-teal-355 group-hover:scale-110 transition-all duration-500 relative z-10 shadow-[0_0_15px_rgba(20,184,166,0.2)] logo-blink-hover">
                 <HelpingHand size={24} />
               </div>
             </div>
@@ -107,7 +109,8 @@ const LandingPage = () => {
           {/* Elder Card */}
           <div 
             onClick={() => navigate('/old-person/login')}
-            className="group cursor-pointer relative rounded-2xl p-8 bg-slate-950/40 border border-pink-500/20 backdrop-blur-md hover:border-pink-500/50 hover:bg-slate-950/60 transition-all duration-500 flex flex-col items-center hover:-translate-y-2 shadow-[0_10px_35px_-15px_rgba(236,72,153,0.15)] hover:shadow-[0_20px_40px_-10px_rgba(236,72,153,0.3)] overflow-hidden"
+            className="group cursor-pointer relative rounded-2xl p-8 bg-slate-950/40 border border-pink-500/20 backdrop-blur-md hover:border-pink-500/50 hover:bg-slate-950/60 transition-all duration-500 flex flex-col items-center hover:-translate-y-2 shadow-[0_10px_35px_-15px_rgba(236,72,153,0.15)] hover:shadow-[0_20px_40px_-10px_rgba(236,72,153,0.3)] overflow-hidden animate-card-float mirror-shine"
+            style={{ animationDelay: '0.4s' }}
           >
             {/* Glowing bottom strip */}
             <div className="absolute bottom-0 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-transparent via-pink-500 to-transparent opacity-30 group-hover:opacity-100 transition-opacity blur-[1px]" />
@@ -117,7 +120,7 @@ const LandingPage = () => {
               {/* Orbit Ring */}
               <div className="absolute w-[120%] h-[30%] border border-pink-500/30 rounded-full transform rotate-[-25deg] shadow-[0_0_8px_rgba(236,72,153,0.1)] group-hover:border-pink-500/60 transition-all duration-500" />
               {/* Core Icon */}
-              <div className="w-14 h-14 rounded-full bg-pink-950/60 border border-pink-500/30 flex items-center justify-center text-pink-400 group-hover:text-pink-350 group-hover:scale-110 transition-all duration-500 relative z-10 shadow-[0_0_15px_rgba(236,72,153,0.2)]">
+              <div className="w-14 h-14 rounded-full bg-pink-950/60 border border-pink-500/30 flex items-center justify-center text-pink-400 group-hover:text-pink-355 group-hover:scale-110 transition-all duration-500 relative z-10 shadow-[0_0_15px_rgba(236,72,153,0.2)] logo-blink-hover">
                 <Heart size={24} />
               </div>
             </div>
