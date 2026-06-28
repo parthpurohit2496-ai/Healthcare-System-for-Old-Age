@@ -375,4 +375,69 @@
   transform-origin: bottom center;
 }
 
+/* ==================================================================== */
+/* ADMIN PORTAL GLASSMORPHIC CARD & INTERACTIVE ELEMENT OVERRIDES      */
+/* ==================================================================== */
+
+.admin-workspace-container .bg-white {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(59, 130, 246, 0.12) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.015) !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.admin-workspace-container .bg-white:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+  transform: translateY(-2px);
+}
+
+/* Override table headings and row borders */
+.admin-workspace-container table th {
+  background: rgba(248, 250, 252, 0.4) !important;
+  color: #475569 !important;
+  font-weight: 800 !important;
+  border-bottom: 1.5px solid rgba(226, 232, 240, 0.4) !important;
+}
+
+.admin-workspace-container table td,
+.admin-workspace-container .divide-y > * {
+  border-color: rgba(226, 232, 240, 0.3) !important;
+}
+
+/* Override input/select styles inside Admin pages to match glass aesthetic */
+.admin-workspace-container input:not([type="checkbox"]):not([type="radio"]),
+.admin-workspace-container select,
+.admin-workspace-container textarea {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid rgba(203, 213, 225, 0.5) !important;
+  color: #1e293b !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+.admin-workspace-container input:not([type="checkbox"]):not([type="radio"]):focus,
+.admin-workspace-container select:focus,
+.admin-workspace-container textarea:focus {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-color: #3b82f6 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Make tables and listings legible on glass */
+.admin-workspace-container .text-slate-800,
+.admin-workspace-container .text-slate-850,
+.admin-workspace-container .text-slate-700 {
+  color: #1e293b !important;
+}
+
+/* Make lists cleaner */
+.admin-workspace-container .divide-slate-100 > * {
+  border-color: rgba(226, 232, 240, 0.3) !important;
+}
+
 

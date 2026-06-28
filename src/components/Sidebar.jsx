@@ -56,15 +56,16 @@ const Sidebar = () => {
         <p className="px-6 text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-3">Portal Navigation</p>
 
         {activeUser.role === 'Admin' && (
-          <>
+          <div className="space-y-1">
             <NavLink 
               to="/admin/dashboard" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 mx-3 px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <LayoutDashboard size={18} />
-              <span>Dashboard</span>
+              <div className="animate-shine-sweep" />
+              <LayoutDashboard size={16} className="group-hover:scale-110 transition-transform duration-300 text-blue-600 relative z-10" />
+              <span className="relative z-10">Dashboard</span>
               {activeSosCount > 0 && (
-                <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">
+                <span className="ml-auto bg-red-500 text-white text-[9px] px-2 py-0.5 rounded-full font-bold relative z-10">
                   {activeSosCount}
                 </span>
               )}
@@ -72,68 +73,76 @@ const Sidebar = () => {
 
             <NavLink 
               to="/admin/helper-requests" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 mx-3 px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <UserPlus size={18} />
-              <span>Helper Requests</span>
+              <div className="animate-shine-sweep" />
+              <UserPlus size={16} className="group-hover:scale-110 transition-transform duration-300 text-blue-600 relative z-10" />
+              <span className="relative z-10">Helper Requests</span>
             </NavLink>
 
             <NavLink 
               to="/admin/patients" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 mx-3 px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <Users size={18} />
-              <span>Patient Data</span>
+              <div className="animate-shine-sweep" />
+              <Users size={16} className="group-hover:scale-110 transition-transform duration-300 text-blue-600 relative z-10" />
+              <span className="relative z-10">Patient Data</span>
             </NavLink>
 
             <NavLink 
               to="/admin/medicines" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 mx-3 px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <Pill size={18} />
-              <span>Add Medicine (Dava)</span>
+              <div className="animate-shine-sweep" />
+              <Pill size={16} className="group-hover:scale-110 transition-transform duration-300 text-blue-600 relative z-10" />
+              <span className="relative z-10">Add Medicine (Dava)</span>
             </NavLink>
 
             <NavLink 
               to="/admin/reports" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 mx-3 px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <FileSpreadsheet size={18} />
-              <span>Add Patient Reports</span>
+              <div className="animate-shine-sweep" />
+              <FileSpreadsheet size={16} className="group-hover:scale-110 transition-transform duration-300 text-blue-600 relative z-10" />
+              <span className="relative z-10">Add Patient Reports</span>
             </NavLink>
 
             <NavLink 
               to="/admin/analytics" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 mx-3 px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <BarChart3 size={18} />
-              <span>Analytics & Trends</span>
+              <div className="animate-shine-sweep" />
+              <BarChart3 size={16} className="group-hover:scale-110 transition-transform duration-300 text-blue-600 relative z-10" />
+              <span className="relative z-10">Analytics & Trends</span>
             </NavLink>
 
             <NavLink 
               to="/admin/audit-log" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 mx-3 px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <ClipboardList size={18} />
-              <span>Audit Log</span>
+              <div className="animate-shine-sweep" />
+              <ClipboardList size={16} className="group-hover:scale-110 transition-transform duration-300 text-blue-600 relative z-10" />
+              <span className="relative z-10">Audit Log</span>
             </NavLink>
 
             <NavLink 
               to="/admin/announcements" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 mx-3 px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <MessageSquare size={18} />
-              <span>Announcements</span>
+              <div className="animate-shine-sweep" />
+              <MessageSquare size={16} className="group-hover:scale-110 transition-transform duration-300 text-blue-600 relative z-10" />
+              <span className="relative z-10">Announcements</span>
             </NavLink>
 
             <NavLink 
               to="/admin/settings" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
+              className={({ isActive }) => `relative overflow-hidden flex items-center gap-3 mx-3 px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all group ${isActive ? theme.navActive : theme.hover}`}
             >
-              <Settings size={18} />
-              <span>Settings & Roles</span>
+              <div className="animate-shine-sweep" />
+              <Settings size={16} className="group-hover:scale-110 transition-transform duration-300 text-blue-600 relative z-10" />
+              <span className="relative z-10">Settings & Roles</span>
             </NavLink>
-          </>
+          </div>
         )}
 
         {activeUser.role === 'Helper' && (
