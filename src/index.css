@@ -299,4 +299,44 @@
   animation: shineSweep 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Gentle Floating Animation */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.animate-float-gentle {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+/* Sparkle Emission Animation */
+@keyframes emitSparkle {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-20px) scale(1.1);
+  }
+  100% {
+    transform: translateY(-40px) scale(0.5);
+    opacity: 0;
+  }
+}
+.animate-emit-sparkle-1 {
+  animation: emitSparkle 3.5s ease-out infinite;
+}
+.animate-emit-sparkle-2 {
+  animation: emitSparkle 4.2s ease-out infinite;
+}
+.animate-emit-sparkle-3 {
+  animation: emitSparkle 3s ease-out infinite;
+}
+
 

@@ -204,7 +204,7 @@ const Sidebar = () => {
 
             {/* ================= BEAUTIFUL BOTANICAL ARTWORK IN EMPTY SPACE ================= */}
             <div className="hidden md:flex flex-col items-center justify-center py-6 px-4 mt-8 opacity-90 transition-opacity duration-300">
-              <svg viewBox="0 0 200 130" className="w-56 h-36 text-purple-600/18 hover:text-purple-500/30 transition-colors duration-500 pointer-events-none select-none">
+              <svg viewBox="0 0 200 130" className="w-56 h-36 animate-float-gentle text-purple-600/18 hover:text-purple-500/30 transition-colors duration-500 pointer-events-none select-none">
                 {/* Lavender sprigs / abstract flower stems */}
                 <path d="M90,110 C90,80 95,50 100,20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
                 <path d="M110,110 C108,85 105,60 100,35" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.8" />
@@ -220,10 +220,13 @@ const Sidebar = () => {
                 <ellipse cx="96" cy="90" rx="5" ry="3.5" fill="#a855f7" opacity="0.9" transform="rotate(-15, 96, 90)" />
                 <ellipse cx="104" cy="92" rx="5" ry="3.5" fill="#c084fc" opacity="0.9" transform="rotate(15, 104, 92)" />
 
-                {/* Floating gold highlights */}
-                <circle cx="60" cy="35" r="1.5" fill="#fbbf24" className="animate-pulse" />
-                <circle cx="140" cy="50" r="1.5" fill="#fbbf24" className="animate-pulse" />
-                <circle cx="130" cy="85" r="1" fill="#fbbf24" />
+                {/* Emitting gold highlights / sparkles (rising and fading) */}
+                <circle cx="100" cy="30" r="1.8" fill="#fbbf24" className="animate-emit-sparkle-1" />
+                <circle cx="95" cy="45" r="1.5" fill="#f59e0b" className="animate-emit-sparkle-2" style={{ animationDelay: '0.8s' }} />
+                <circle cx="105" cy="58" r="2.2" fill="#fbbf24" className="animate-emit-sparkle-3" style={{ animationDelay: '1.6s' }} />
+                <circle cx="90" cy="70" r="1.6" fill="#f59e0b" className="animate-emit-sparkle-1" style={{ animationDelay: '2.2s' }} />
+                <circle cx="110" cy="75" r="2" fill="#fbbf24" className="animate-emit-sparkle-2" style={{ animationDelay: '0.4s' }} />
+                <circle cx="100" cy="88" r="1.5" fill="#34d399" className="animate-emit-sparkle-3" style={{ animationDelay: '1.2s' }} />
               </svg>
               <span className="text-[10px] text-purple-800/40 font-black tracking-[0.2em] uppercase mt-2 select-none">
                 Lavender Calm
