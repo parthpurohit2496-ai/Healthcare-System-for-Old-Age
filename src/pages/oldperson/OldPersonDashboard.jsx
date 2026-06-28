@@ -160,12 +160,12 @@ const OldPersonDashboard = () => {
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-3xl">
         {/* Real Generated Beautiful Zen Nature Landscape Background */}
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-[0.85] z-0" 
+          className="absolute inset-0 bg-cover bg-center opacity-100 z-0" 
           style={{ backgroundImage: "url('/bg_nature.png')" }} 
         />
         
-        {/* Soft white-lavender glaze overlay to ensure high contrast & role-specific purple theme */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F9F5FB]/80 via-[#FDFCFD]/65 to-[#F5F2F9]/75 z-0" />
+        {/* Soft white-lavender glaze overlay - lightened to make background scenery prominent */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F9F5FB]/35 via-[#FDFCFD]/25 to-[#F5F2F9]/30 z-0" />
         
         {/* Purple/Lavender glowing blobs */}
         <div className="absolute top-[10%] left-[20%] w-[450px] h-[450px] rounded-full bg-purple-100/30 blur-[85px]" />
@@ -271,14 +271,17 @@ const OldPersonDashboard = () => {
           <div className="lg:col-span-2 space-y-8">
             
             {/* Vitals History Line Chart */}
-            <div 
+            <motion.div 
+              initial={{ opacity: 0, y: 35, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
               onMouseMove={(e) => handleCardMouseMove(e, 'chart')}
               onMouseLeave={() => handleCardMouseLeave('chart')}
               style={{
                 ...tiltStyles.chart,
-                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.04)'
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.02)'
               }}
-              className="group border-glow-wrapper card-3d relative rounded-3xl p-6 bg-white/8 opacity-95 backdrop-blur-md border border-purple-500/16 hover:bg-white/12 mouse-glow-container overflow-hidden flex flex-col justify-between"
+              className="group border-glow-wrapper card-3d relative rounded-3xl p-6 bg-white/4 backdrop-blur-lg border border-purple-500/12 hover:bg-white/8 mouse-glow-container overflow-hidden flex flex-col justify-between"
             >
               <div className="border-glow-element" style={{ '--glow-color': '#a855f7' }} />
               <div className="mouse-glow-bg" />
@@ -292,18 +295,18 @@ const OldPersonDashboard = () => {
                 {patientVitals.length === 0 ? (
                   <p className="text-xs text-slate-400 text-center py-12 font-medium">No vitals logged yet by care helper.</p>
                 ) : (
-                  <div className="h-64 mt-4 w-full text-slate-600 font-bold">
+                  <div className="h-64 mt-4 w-full text-slate-650 font-bold">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={patientVitals} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                        <XAxis dataKey="date" stroke="#94a3b8" fontSize={9} tickLine={false} />
-                        <YAxis stroke="#94a3b8" fontSize={9} tickLine={false} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" opacity={0.6} />
+                        <XAxis dataKey="date" stroke="#64748b" fontSize={9} tickLine={false} />
+                        <YAxis stroke="#64748b" fontSize={9} tickLine={false} />
                         <Tooltip />
                         <Legend verticalAlign="top" height={36} fontSize={10} />
-                        <Line type="monotone" dataKey="bpSystolic" name="Systolic (BP)" stroke="#a855f7" strokeWidth={2.5} activeDot={{ r: 6 }} />
-                        <Line type="monotone" dataKey="bpDiastolic" name="Diastolic (BP)" stroke="#c084fc" strokeWidth={2} />
-                        <Line type="monotone" dataKey="sugar" name="Sugar" stroke="#10b981" strokeWidth={2} />
-                        <Line type="monotone" dataKey="pulse" name="Pulse Rate" stroke="#f43f5e" strokeWidth={2} />
+                        <Line type="monotone" dataKey="bpSystolic" name="Systolic (BP)" stroke="#a855f7" strokeWidth={2.5} activeDot={{ r: 6 }} isAnimationActive={true} animationDuration={1800} animationEasing="ease-out" />
+                        <Line type="monotone" dataKey="bpDiastolic" name="Diastolic (BP)" stroke="#c084fc" strokeWidth={2} isAnimationActive={true} animationDuration={2100} animationEasing="ease-out" />
+                        <Line type="monotone" dataKey="sugar" name="Sugar" stroke="#10b981" strokeWidth={2} isAnimationActive={true} animationDuration={2400} animationEasing="ease-out" />
+                        <Line type="monotone" dataKey="pulse" name="Pulse Rate" stroke="#f43f5e" strokeWidth={2} isAnimationActive={true} animationDuration={2700} animationEasing="ease-out" />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
@@ -330,13 +333,13 @@ const OldPersonDashboard = () => {
                   </div>
                   <div className="bg-slate-50/40 p-2.5 rounded-2xl border border-slate-200/40">
                     <p className="text-[9px] text-slate-400 font-black uppercase tracking-wider">Care Status</p>
-                    <h4 className={`text-xs font-black mt-2.5 uppercase ${patient.fitStatus === 'Fit' ? 'text-emerald-750' : 'text-red-650'}`}>
+                    <h4 className={`text-xs font-black mt-2.5 uppercase ${patient.fitStatus === 'Fit' ? 'text-emerald-750' : 'text-red-655'}`}>
                       {patient.fitStatus}
                     </h4>
                   </div>
                 </div>
               )}
-            </div>
+            </motion.div>
 
             {/* Interactive Actions Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
