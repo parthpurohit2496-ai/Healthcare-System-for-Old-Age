@@ -27,13 +27,13 @@ const Sidebar = () => {
         };
       case 'Old Person':
         return {
-          navActive: 'bg-patient-light text-patient-primary border-r-4 border-patient-accent',
-          hover: 'hover:bg-slate-100 transition-all duration-200'
+          navActive: 'bg-[#F5F0FA]/60 text-purple-800 border-l-4 border-purple-650 shadow-[0_4px_12px_rgba(168,85,247,0.03)] font-black',
+          hover: 'hover:bg-purple-50/20 hover:text-purple-750 hover:translate-x-1 transition-all duration-300 text-slate-600'
         };
       default:
         return {
           navActive: 'bg-slate-100 text-slate-800',
-          hover: 'hover:bg-slate-50 transition-all duration-200'
+          hover: 'hover:bg-slate-55 transition-all duration-200'
         };
     }
   };
@@ -43,6 +43,9 @@ const Sidebar = () => {
   const getSidebarClasses = () => {
     if (activeUser.role === 'Helper') {
       return "w-64 bg-white/15 backdrop-blur-xl border-r border-emerald-100/20 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[4px_0_24px_rgba(0,0,0,0.02)] select-none rounded-r-[24px] relative z-20 text-slate-700";
+    }
+    if (activeUser.role === 'Old Person') {
+      return "w-64 bg-white/15 backdrop-blur-xl border-r border-purple-100/20 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[4px_0_24px_rgba(0,0,0,0.02)] select-none rounded-r-[24px] relative z-20 text-slate-700";
     }
     return "w-64 bg-white border-r border-slate-200 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-sm select-none";
   };
@@ -187,13 +190,45 @@ const Sidebar = () => {
 
         {activeUser.role === 'Old Person' && (
           <>
-            <NavLink 
-              to="/old-person/dashboard" 
-              className={({ isActive }) => `flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 transition-all ${isActive ? theme.navActive : theme.hover}`}
-            >
-              <LayoutDashboard size={18} />
-              <span>My Dashboard</span>
-            </NavLink>
+            <div className="space-y-2">
+              <NavLink 
+                to="/old-person/dashboard" 
+                className={({ isActive }) => `relative overflow-hidden flex items-center gap-4 mx-3 px-5 py-3.5 rounded-2xl text-base font-medium transition-all group ${isActive ? theme.navActive : theme.hover}`}
+              >
+                {/* Mirror shine sweep reflection */}
+                <div className="animate-shine-sweep" />
+                <LayoutDashboard size={20} className="group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-purple-650 relative z-10" />
+                <span className="relative z-10">My Dashboard</span>
+              </NavLink>
+            </div>
+
+            {/* ================= BEAUTIFUL BOTANICAL ARTWORK IN EMPTY SPACE ================= */}
+            <div className="hidden md:flex flex-col items-center justify-center py-6 px-4 mt-8 opacity-90 transition-opacity duration-300">
+              <svg viewBox="0 0 200 130" className="w-44 h-28 text-purple-600/18 hover:text-purple-500/30 transition-colors duration-500 pointer-events-none select-none">
+                {/* Lavender sprigs / abstract flower stems */}
+                <path d="M90,110 C90,80 95,50 100,20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
+                <path d="M110,110 C108,85 105,60 100,35" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.8" />
+                
+                {/* Lavender buds */}
+                <ellipse cx="100" cy="20" rx="4" ry="7" fill="#a855f7" opacity="0.65" />
+                <ellipse cx="96" cy="35" rx="5" ry="3.5" fill="#a855f7" opacity="0.75" transform="rotate(-15, 96, 35)" />
+                <ellipse cx="104" cy="38" rx="5" ry="3.5" fill="#c084fc" opacity="0.75" transform="rotate(15, 104, 38)" />
+                <ellipse cx="100" cy="50" rx="6" ry="4" fill="#a855f7" />
+                <ellipse cx="95" cy="62" rx="5" ry="3.5" fill="#c084fc" opacity="0.8" transform="rotate(-20, 95, 62)" />
+                <ellipse cx="105" cy="65" rx="5" ry="3.5" fill="#a855f7" opacity="0.8" transform="rotate(20, 105, 65)" />
+                <ellipse cx="100" cy="78" rx="6" ry="4" fill="#c084fc" />
+                <ellipse cx="96" cy="90" rx="5" ry="3.5" fill="#a855f7" opacity="0.9" transform="rotate(-15, 96, 90)" />
+                <ellipse cx="104" cy="92" rx="5" ry="3.5" fill="#c084fc" opacity="0.9" transform="rotate(15, 104, 92)" />
+
+                {/* Floating gold highlights */}
+                <circle cx="60" cy="35" r="1.5" fill="#fbbf24" className="animate-pulse" />
+                <circle cx="140" cy="50" r="1.5" fill="#fbbf24" className="animate-pulse" />
+                <circle cx="130" cy="85" r="1" fill="#fbbf24" />
+              </svg>
+              <span className="text-[10px] text-purple-800/40 font-black tracking-[0.2em] uppercase mt-2 select-none">
+                Lavender Calm
+              </span>
+            </div>
           </>
         )}
       </div>
@@ -213,6 +248,23 @@ const Sidebar = () => {
             <p className="text-[11px] text-emerald-800/60 font-black uppercase tracking-widest mb-1.5">Weekly Focus</p>
             <p className="text-xs text-emerald-800 leading-relaxed font-extrabold italic">
               "Your caring patience makes a healing difference every single day."
+            </p>
+          </div>
+        )}
+
+        {activeUser.role === 'Old Person' && (
+          <div className="p-5 mx-3 rounded-[24px] bg-[#F5F0FA]/40 backdrop-blur-md border border-purple-500/15 shadow-sm relative overflow-hidden group">
+            {/* Mirror shine sweep reflection */}
+            <div className="animate-shine-sweep" />
+            {/* Flower decoration outline */}
+            <div className="absolute right-[-8px] bottom-[-8px] opacity-[0.12] text-purple-800 pointer-events-none group-hover:scale-110 transition-transform duration-500">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,2C12,2 6,8 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8 12,2 12,2Z" />
+              </svg>
+            </div>
+            <p className="text-[11px] text-purple-800/60 font-black uppercase tracking-widest mb-1.5">Wellness Reflection</p>
+            <p className="text-xs text-purple-800 leading-relaxed font-extrabold italic">
+              "Quiet moments bring peace to the mind, strength to the body, and joy to the soul."
             </p>
           </div>
         )}
