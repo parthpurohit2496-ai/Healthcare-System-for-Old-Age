@@ -339,4 +339,40 @@
   animation: emitSparkle 3s ease-out infinite;
 }
 
+/* Flicker Flame Animation (for Lotus / Zen Energy) */
+@keyframes flickerFlame {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.55;
+    filter: drop-shadow(0 0 2px rgba(52, 211, 153, 0.4));
+  }
+  25% {
+    transform: scale(1.08) rotate(-1.5deg);
+    opacity: 0.75;
+    filter: drop-shadow(0 0 5px rgba(52, 211, 153, 0.6));
+  }
+  50% {
+    transform: scale(0.92) rotate(1deg);
+    opacity: 0.45;
+    filter: drop-shadow(0 0 1px rgba(52, 211, 153, 0.2));
+  }
+  75% {
+    transform: scale(1.15) rotate(-0.5deg);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 6px rgba(52, 211, 153, 0.7));
+  }
+}
+.animate-flicker-flame-1 {
+  animation: flickerFlame 2.2s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.animate-flicker-flame-2 {
+  animation: flickerFlame 2.8s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.animate-flicker-flame-3 {
+  animation: flickerFlame 1.8s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
 

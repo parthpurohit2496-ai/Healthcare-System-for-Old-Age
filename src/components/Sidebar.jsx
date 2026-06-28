@@ -162,7 +162,7 @@ const Sidebar = () => {
 
             {/* ================= BEAUTIFUL BOTANICAL ARTWORK IN EMPTY SPACE ================= */}
             <div className="hidden md:flex flex-col items-center justify-center py-6 px-4 mt-8 opacity-90 transition-opacity duration-300">
-              <svg viewBox="0 0 200 130" className="w-44 h-28 text-emerald-600/18 hover:text-emerald-500/30 transition-colors duration-500 pointer-events-none select-none">
+              <svg viewBox="0 0 200 130" className="w-44 h-28 animate-float-gentle text-emerald-600/18 hover:text-emerald-500/30 transition-colors duration-500 pointer-events-none select-none">
                 {/* Zen Balanced Stones Stack */}
                 <ellipse cx="100" cy="105" rx="42" ry="12" fill="currentColor" />
                 <ellipse cx="100" cy="85" rx="34" ry="10" fill="currentColor" opacity="0.9" />
@@ -170,16 +170,17 @@ const Sidebar = () => {
                 <ellipse cx="100" cy="53" rx="18" ry="6" fill="currentColor" />
                 <ellipse cx="100" cy="41" rx="11" ry="4" fill="currentColor" opacity="0.85" />
                 
-                {/* Glowing Lotus Bloom on Top */}
-                <path d="M100,16 C96,24 94,32 100,37 C106,32 104,24 100,16 Z" fill="#10b981" opacity="0.55" className="animate-pulse" />
-                <path d="M100,22 C92,25 86,30 93,37 C100,37 99,28 100,22 Z" fill="#34d399" opacity="0.4" />
-                <path d="M100,22 C108,25 114,30 107,37 C100,37 101,28 100,22 Z" fill="#34d399" opacity="0.4" />
+                {/* Glowing Lotus Bloom on Top (Flickering Energy Flame) */}
+                <path d="M100,16 C96,24 94,32 100,37 C106,32 104,24 100,16 Z" fill="#10b981" opacity="0.55" className="animate-flicker-flame-1" />
+                <path d="M100,22 C92,25 86,30 93,37 C100,37 99,28 100,22 Z" fill="#34d399" opacity="0.4" className="animate-flicker-flame-2" />
+                <path d="M100,22 C108,25 114,30 107,37 C100,37 101,28 100,22 Z" fill="#34d399" opacity="0.4" className="animate-flicker-flame-3" />
 
-                {/* Sparkle highlights */}
-                <circle cx="50" cy="45" r="1.5" fill="#fbbf24" className="animate-pulse" />
-                <circle cx="150" cy="65" r="2" fill="#fbbf24" className="animate-pulse" />
-                <circle cx="135" cy="30" r="1.5" fill="#fbbf24" />
-                <circle cx="65" cy="85" r="1" fill="#fbbf24" />
+                {/* Energy Sparkles Emitted (rising and fading) */}
+                <circle cx="100" cy="25" r="1.5" fill="#fbbf24" className="animate-emit-sparkle-1" />
+                <circle cx="92" cy="38" r="1.8" fill="#fbbf24" className="animate-emit-sparkle-2" style={{ animationDelay: '0.9s' }} />
+                <circle cx="108" cy="35" r="1.2" fill="#34d399" className="animate-emit-sparkle-3" style={{ animationDelay: '1.8s' }} />
+                <circle cx="85" cy="45" r="1.5" fill="#fbbf24" className="animate-emit-sparkle-1" style={{ animationDelay: '2.5s' }} />
+                <circle cx="115" cy="50" r="1.8" fill="#fbbf24" className="animate-emit-sparkle-2" style={{ animationDelay: '1.2s' }} />
               </svg>
               <span className="text-[10px] text-emerald-800/40 font-black tracking-[0.2em] uppercase mt-2 select-none">
                 Zen Harmony
