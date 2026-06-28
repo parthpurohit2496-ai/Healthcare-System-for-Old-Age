@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
-import { LogOut, User, Bell, HeartPulse, Clock } from 'lucide-react';
+import { LogOut, User, Bell, HeartPulse, Clock, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ onToggleSidebar, isSidebarOpen }) => {
   const { activeUser, logoutUser, sosAlerts } = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -61,10 +61,21 @@ const Navbar = () => {
 
   return (
     <header className={`h-16 px-6 flex items-center justify-between transition-all duration-300 select-none z-30 relative ${getThemeClasses()}`}>
-      <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-        <HeartPulse size={22} className={`animate-pulse ${getHeartColor()}`} />
-        <span className="font-black text-xl tracking-tight text-slate-800">Health Care</span>
-        <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-slate-850/10 text-slate-650 uppercase font-black tracking-wider">v2.0</span>
+      <div className="flex items-center gap-3">
+        {activeUser && (
+          <button 
+            onClick={onToggleSidebar}
+            className="md:hidden p-2 rounded-xl bg-slate-800/5 hover:bg-slate-800/10 text-slate-700 transition-colors border border-slate-300/10"
+            aria-label="Toggle Menu"
+          >
+            {isSidebarOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        )}
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
+          <HeartPulse size={22} className={`animate-pulse ${getHeartColor()}`} />
+          <span className="font-black text-xl tracking-tight text-slate-800">Health Care</span>
+          <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-slate-850/10 text-slate-650 uppercase font-black tracking-wider">v2.0</span>
+        </div>
       </div>
 
       {/* ================= CENTRAL CLOCK & PORTAL STATUS REMINDERS ================= */}

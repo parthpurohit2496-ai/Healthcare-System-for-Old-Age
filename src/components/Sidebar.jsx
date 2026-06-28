@@ -6,7 +6,7 @@ import {
   Settings, Pill, ClipboardList, MessageSquare, Heart, BarChart3
 } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
   const { activeUser, sosAlerts } = useContext(AppContext);
 
   if (!activeUser) return null;
@@ -41,17 +41,25 @@ const Sidebar = () => {
   const theme = getSidebarTheme();
 
   const getSidebarClasses = () => {
+    const baseTransitions = "transition-all duration-300 ease-in-out md:translate-x-0 md:static md:flex";
+    const visibility = isOpen 
+      ? "translate-x-0 flex fixed left-0 top-16 bottom-0 z-40 bg-white/95 backdrop-blur-2xl shadow-2xl" 
+      : "-translate-x-full hidden md:flex";
+
     if (activeUser.role === 'Helper') {
-      return "w-64 bg-white/15 backdrop-blur-xl border-r border-emerald-100/20 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[4px_0_24px_rgba(0,0,0,0.02)] select-none rounded-r-[24px] relative z-20 text-slate-700";
+      return `w-64 bg-white/15 backdrop-blur-xl border-r border-emerald-100/20 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[4px_0_24px_rgba(0,0,0,0.02)] select-none rounded-r-[24px] relative z-25 text-slate-700 ${baseTransitions} ${visibility}`;
     }
     if (activeUser.role === 'Old Person') {
-      return "w-64 bg-white/15 backdrop-blur-xl border-r border-purple-100/20 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[4px_0_24px_rgba(0,0,0,0.02)] select-none rounded-r-[24px] relative z-20 text-slate-700";
+      return `w-64 bg-white/15 backdrop-blur-xl border-r border-purple-100/20 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[4px_0_24px_rgba(0,0,0,0.02)] select-none rounded-r-[24px] relative z-25 text-slate-700 ${baseTransitions} ${visibility}`;
     }
-    return "w-64 bg-white border-r border-slate-200 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-sm select-none";
+    if (activeUser.role === 'Admin') {
+      return `w-64 bg-white/15 backdrop-blur-xl border-r border-blue-100/20 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-[4px_0_24px_rgba(0,0,0,0.02)] select-none rounded-r-[24px] relative z-25 text-slate-700 ${baseTransitions} ${visibility}`;
+    }
+    return `w-64 bg-white border-r border-slate-200 h-[calc(100vh-4rem)] flex flex-col justify-between py-4 shadow-sm select-none ${baseTransitions} ${visibility}`;
   };
 
   return (
-    <aside className={getSidebarClasses()}>
+    <aside className={getSidebarClasses()} onClick={() => { if (window.innerWidth < 768 && onClose) onClose(); }}>
       <div className="flex flex-col gap-1.5">
         <p className="px-6 text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-3">Portal Navigation</p>
 

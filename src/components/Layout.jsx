@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import Navbar from './Navbar';
@@ -7,6 +7,7 @@ import SOSAlert from './SOSAlert';
 
 const Layout = ({ allowedRoles }) => {
   const { activeUser } = useContext(AppContext);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // If not logged in, redirect to landing
   if (!activeUser) {
@@ -70,10 +71,17 @@ const Layout = ({ allowedRoles }) => {
       {/* ==================================================================== */}
 
       <div className="relative z-10 flex flex-col min-h-screen flex-1">
-        <Navbar />
-        <div className="flex flex-1">
-          <Sidebar />
-          <main className="flex-1 p-6 h-[calc(100vh-4rem)] overflow-y-auto no-scrollbar">
+        <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} isSidebarOpen={sidebarOpen} />
+        <div className="flex flex-1 relative overflow-hidden">
+          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          {/* Mobile backdrop overlay */}
+          {sidebarOpen && (
+            <div 
+              className="md:hidden fixed inset-0 z-20 bg-slate-950/20 backdrop-blur-sm cursor-pointer"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+          <main className="flex-1 p-4 md:p-6 h-[calc(100vh-4rem)] overflow-y-auto no-scrollbar relative z-10">
             <div className="admin-workspace-container max-w-7xl mx-auto fade-in-up">
               <Outlet />
             </div>
