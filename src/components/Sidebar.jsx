@@ -204,7 +204,7 @@ const Sidebar = () => {
 
             {/* ================= BEAUTIFUL BOTANICAL ARTWORK IN EMPTY SPACE ================= */}
             <div className="hidden md:flex flex-col items-center justify-center py-6 px-4 mt-8 opacity-90 transition-opacity duration-300">
-              <svg viewBox="0 0 200 130" className="w-44 h-28 text-purple-600/18 hover:text-purple-500/30 transition-colors duration-500 pointer-events-none select-none">
+              <svg viewBox="0 0 200 130" className="w-56 h-36 text-purple-600/18 hover:text-purple-500/30 transition-colors duration-500 pointer-events-none select-none">
                 {/* Lavender sprigs / abstract flower stems */}
                 <path d="M90,110 C90,80 95,50 100,20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
                 <path d="M110,110 C108,85 105,60 100,35" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.8" />
