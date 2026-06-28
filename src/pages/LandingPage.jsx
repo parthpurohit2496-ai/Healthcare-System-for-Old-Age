@@ -8,6 +8,35 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const { activeUser } = useContext(AppContext);
 
+  // Welcome splash screen preloader state
+  const [showSplash, setShowSplash] = useState(() => {
+    // Only show splash if it hasn't loaded in the current browser session
+    const hasLoaded = sessionStorage.getItem('splashLoaded');
+    return !hasLoaded;
+  });
+  const [splashOpacity, setSplashOpacity] = useState(1);
+
+  useEffect(() => {
+    if (showSplash) {
+      sessionStorage.setItem('splashLoaded', 'true');
+      
+      // Fade out splash overlay after 2.3 seconds
+      const fadeTimer = setTimeout(() => {
+        setSplashOpacity(0);
+      }, 2300);
+
+      // Remove splash completely after 2.8 seconds
+      const removeTimer = setTimeout(() => {
+        setShowSplash(false);
+      }, 2800);
+
+      return () => {
+        clearTimeout(fadeTimer);
+        clearTimeout(removeTimer);
+      };
+    }
+  }, [showSplash]);
+
   // Parallax state based on mouse coordinates for background layers
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -112,6 +141,70 @@ const LandingPage = () => {
     duration: `${15 + (i % 4) * 4}s`,
     size: `${(i % 3) * 2.5 + 4}px`
   }));
+
+  if (showSplash) {
+    return (
+      <div 
+        className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 transition-opacity duration-500 ease-out select-none"
+        style={{ opacity: splashOpacity }}
+      >
+        {/* Glowing background atmosphere blobs */}
+        <div className="absolute top-[30%] left-[25%] w-[350px] h-[350px] rounded-full bg-emerald-500/10 blur-[80px] pointer-events-none" />
+        <div className="absolute bottom-[30%] right-[25%] w-[350px] h-[350px] rounded-full bg-blue-500/10 blur-[80px] pointer-events-none" />
+        <div className="absolute top-[45%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full bg-purple-500/5 blur-[90px] pointer-events-none" />
+
+        {/* Floating background particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
+          <div className="absolute top-[20%] left-[15%] text-emerald-400/25 animate-pulse text-xs">✦</div>
+          <div className="absolute top-[75%] left-[80%] text-blue-400/25 animate-pulse text-sm" style={{ animationDelay: '1.2s' }}>✦</div>
+          <div className="absolute top-[40%] right-[20%] text-purple-400/20 animate-pulse text-[10px]" style={{ animationDelay: '2s' }}>✦</div>
+        </div>
+
+        {/* Central Logo and Name */}
+        <div className="relative z-10 flex flex-col items-center text-center max-w-md px-6">
+          <motion.div 
+            initial={{ scale: 0.6, rotate: -25, opacity: 0 }}
+            animate={{ scale: [0.6, 1.1, 1], rotate: 0, opacity: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="p-6.5 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl relative mb-6"
+          >
+            {/* Pulsing halo */}
+            <div className="absolute inset-0 rounded-[32px] bg-emerald-500/20 blur-xl animate-ping opacity-60 pointer-events-none" style={{ animationDuration: '3s' }} />
+            
+            <Heart size={44} className="text-emerald-400 fill-emerald-400/25 animate-pulse" />
+          </motion.div>
+
+          <motion.h1 
+            initial={{ letterSpacing: "0.05em", opacity: 0, y: 15 }}
+            animate={{ letterSpacing: "0.22em", opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
+            className="text-4xl font-black text-white uppercase tracking-[0.2em] leading-none"
+          >
+            Health Care
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            transition={{ duration: 1.2, delay: 1 }}
+            className="text-[10px] text-white font-extrabold uppercase tracking-[0.3em] mt-4"
+          >
+            Zen Harmony System v2.0
+          </motion.p>
+
+          {/* Loading bar */}
+          <div className="w-48 h-1 bg-white/5 rounded-full mt-10 overflow-hidden relative border border-white/5 shadow-inner">
+            <motion.div 
+              initial={{ left: "-100%" }}
+              animate={{ left: "100%" }}
+              transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+              className="absolute top-0 bottom-0 w-1/2 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 rounded-full"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col justify-between text-slate-800 relative overflow-hidden select-none">
