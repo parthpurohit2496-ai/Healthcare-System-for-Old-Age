@@ -1,0 +1,443 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0b1220;
+    @apply text-slate-100;
+  }
+}
+
+/* Metallic SaaS Heading Typography */
+.text-premium-metallic {
+  background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.5) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism Card Styling */
+.glass-card-premium {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Calming Light Glassmorphism Card (for Helper Dashboard) */
+.glass-card-calm {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(22, 163, 74, 0.16);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Mouse-follow glow effect container */
+.mouse-glow-container {
+  position: relative;
+}
+
+.mouse-glow-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+    rgba(255, 255, 255, 0.04),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.mouse-glow-container:hover .mouse-glow-bg {
+  opacity: 1;
+}
+
+/* Floating Particles (Landing Background) */
+@keyframes floatParticle {
+  0% {
+    transform: translateY(105vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--max-opacity, 0.4);
+  }
+  90% {
+    opacity: var(--max-opacity, 0.4);
+  }
+  100% {
+    transform: translateY(-10vh) translateX(60px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.bg-particle {
+  position: absolute;
+  pointer-events: none;
+  animation: floatParticle var(--duration) ease-in-out var(--delay) infinite;
+}
+
+/* Wave Background Animations */
+@keyframes waveSlow {
+  0%, 100% {
+    transform: translateX(0) translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-2%) translateY(10px) scaleY(1.02);
+  }
+}
+@keyframes waveMedium {
+  0%, 100% {
+    transform: translateX(0) translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(2%) translateY(-8px) scaleY(0.98);
+  }
+}
+
+.animate-wave-slow {
+  animation: waveSlow 25s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.animate-wave-medium {
+  animation: waveMedium 18s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* Slowly Floating & Pulsing Icons */
+@keyframes floatPulse {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.03);
+  }
+}
+.animate-float-pulse {
+  animation: floatPulse 4s ease-in-out infinite;
+}
+
+/* Scanning scanline glow inside cards */
+@keyframes lineGlow {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+.animate-line-glow {
+  position: absolute;
+  width: 70%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  animation: lineGlow 5s linear infinite;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* Rotating Gradient Border on Card Hover */
+@keyframes borderRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.border-glow-wrapper {
+  position: relative;
+  z-index: 10;
+}
+
+.border-glow-element {
+  position: absolute;
+  inset: -1px;
+  border-radius: 1.05rem;
+  padding: 1px;
+  background: transparent;
+  pointer-events: none;
+  z-index: 0;
+  transition: background 0.5s ease;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+}
+
+.border-glow-wrapper:hover .border-glow-element {
+  background: conic-gradient(from var(--border-angle, 0deg), transparent 60%, var(--glow-color) 100%);
+  animation: borderRotate 3s linear infinite;
+}
+
+/* Aurora Flowing Background Layers */
+@keyframes auroraMove {
+  0% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  33% {
+    border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
+    transform: translate(5vw, 6vh) rotate(120deg) scale(1.15);
+  }
+  66% {
+    border-radius: 50% 50% 30% 70% / 50% 60% 30% 60%;
+    transform: translate(-3vw, -4vh) rotate(240deg) scale(0.9);
+  }
+  100% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform: translate(0, 0) rotate(360deg) scale(1);
+  }
+}
+
+.animate-aurora-1 {
+  animation: auroraMove 30s ease-in-out infinite;
+}
+
+.animate-aurora-2 {
+  animation: auroraMove 24s ease-in-out infinite alternate;
+}
+
+/* Animated Light Beams */
+@keyframes beamGlow {
+  0%, 100% {
+    opacity: 0.01;
+    transform: skewX(-15deg) translateX(-10px);
+  }
+  50% {
+    opacity: 0.06;
+    transform: skewX(-15deg) translateX(10px);
+  }
+}
+
+.animate-beam-glow {
+  animation: beamGlow 12s ease-in-out infinite;
+}
+
+/* Neon Glow Premium Shadows */
+.premium-glow-blue {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), inset 0 0 10px rgba(59, 130, 246, 0.2);
+}
+.premium-glow-emerald {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), inset 0 0 10px rgba(16, 185, 129, 0.2);
+}
+.premium-glow-purple {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.2);
+}
+
+/* 3D tilt transitions and styling */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* Ripple click effect */
+@keyframes rippleEffect {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 0.5;
+  }
+  100% {
+    width: 600px;
+    height: 600px;
+    opacity: 0;
+  }
+}
+
+.ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: rippleEffect 0.6s cubic-bezier(0.1, 0.8, 0.3, 1);
+  z-index: 5;
+}
+
+/* Premium Multi-Layer Card Shadow for floating effect */
+.premium-card-shadow {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1), 
+              0 12px 24px -10px rgba(0, 0, 0, 0.04), 
+              0 0 25px rgba(22, 163, 74, 0.02);
+}
+
+/* Mirror Reflection Shine Sweep Effect */
+@keyframes shineSweep {
+  0% {
+    left: -120%;
+  }
+  100% {
+    left: 120%;
+  }
+}
+.animate-shine-sweep {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 60px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+  z-index: 10;
+}
+.group:hover .animate-shine-sweep {
+  animation: shineSweep 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Gentle Floating Animation */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.animate-float-gentle {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+/* Sparkle Emission Animation */
+@keyframes emitSparkle {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-20px) scale(1.1);
+  }
+  100% {
+    transform: translateY(-40px) scale(0.5);
+    opacity: 0;
+  }
+}
+.animate-emit-sparkle-1 {
+  animation: emitSparkle 3.5s ease-out infinite;
+}
+.animate-emit-sparkle-2 {
+  animation: emitSparkle 4.2s ease-out infinite;
+}
+.animate-emit-sparkle-3 {
+  animation: emitSparkle 3s ease-out infinite;
+}
+
+/* Flicker Flame Animation (for Lotus / Zen Energy) */
+@keyframes flickerFlame {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.55;
+    filter: drop-shadow(0 0 2px rgba(52, 211, 153, 0.4));
+  }
+  25% {
+    transform: scale(1.08) rotate(-1.5deg);
+    opacity: 0.75;
+    filter: drop-shadow(0 0 5px rgba(52, 211, 153, 0.6));
+  }
+  50% {
+    transform: scale(0.92) rotate(1deg);
+    opacity: 0.45;
+    filter: drop-shadow(0 0 1px rgba(52, 211, 153, 0.2));
+  }
+  75% {
+    transform: scale(1.15) rotate(-0.5deg);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 6px rgba(52, 211, 153, 0.7));
+  }
+}
+.animate-flicker-flame-1 {
+  animation: flickerFlame 2.2s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.animate-flicker-flame-2 {
+  animation: flickerFlame 2.8s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.animate-flicker-flame-3 {
+  animation: flickerFlame 1.8s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* ==================================================================== */
+/* ADMIN PORTAL GLASSMORPHIC CARD & INTERACTIVE ELEMENT OVERRIDES      */
+/* ==================================================================== */
+
+.admin-workspace-container .bg-white {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(59, 130, 246, 0.12) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.015) !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.admin-workspace-container .bg-white:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+  transform: translateY(-2px);
+}
+
+/* Override table headings and row borders */
+.admin-workspace-container table th {
+  background: rgba(248, 250, 252, 0.4) !important;
+  color: #475569 !important;
+  font-weight: 800 !important;
+  border-bottom: 1.5px solid rgba(226, 232, 240, 0.4) !important;
+}
+
+.admin-workspace-container table td,
+.admin-workspace-container .divide-y > * {
+  border-color: rgba(226, 232, 240, 0.3) !important;
+}
+
+/* Override input/select styles inside Admin pages to match glass aesthetic */
+.admin-workspace-container input:not([type="checkbox"]):not([type="radio"]),
+.admin-workspace-container select,
+.admin-workspace-container textarea {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid rgba(203, 213, 225, 0.5) !important;
+  color: #1e293b !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+.admin-workspace-container input:not([type="checkbox"]):not([type="radio"]):focus,
+.admin-workspace-container select:focus,
+.admin-workspace-container textarea:focus {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-color: #3b82f6 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Make tables and listings legible on glass */
+.admin-workspace-container .text-slate-800,
+.admin-workspace-container .text-slate-850,
+.admin-workspace-container .text-slate-700 {
+  color: #1e293b !important;
+}
+
+/* Make lists cleaner */
+.admin-workspace-container .divide-slate-100 > * {
+  border-color: rgba(226, 232, 240, 0.3) !important;
+}
+
+
